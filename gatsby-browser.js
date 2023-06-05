@@ -1,7 +1,9 @@
-/**
- * Implement Gatsby's Browser APIs in this file.
- *
- * See: https://www.gatsbyjs.com/docs/reference/config-files/gatsby-browser/
- */
+// custom typefaces
+import "@fontsource/merriweather"
+// normalize CSS across browsers
+import "./src/styles/normalize.css"
+// custom CSS styles
+import "./src/styles/style.css"
 
-// You can delete this file if you're not using it
+// Highlighting for code blocks
+import "prismjs/themes/prism.css"

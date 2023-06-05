@@ -1,14 +1,15 @@
-/**
- * SEO component that queries for data with
- * Gatsby's useStaticQuery React hook
- *
- * See: https://www.gatsbyjs.com/docs/how-to/querying-data/use-static-query/
- */
-
 import * as React from "react"
 import { useStaticQuery, graphql } from "gatsby"
 
-function Seo({ description, title, children }) {
+const DEFAULT_IMAGE = ""
+
+const Seo = ({
+  description,
+  title,
+  children,
+  imageCard: _imageCard,
+  defaultTileOnly,
+}) => {
   const { site } = useStaticQuery(
     graphql`
       query {
@@ -16,7 +17,9 @@ function Seo({ description, title, children }) {
           siteMetadata {
             title
             description
-            author
+            social {
+              twitter
+            }
           }
         }
       }
@@ -26,18 +29,40 @@ function Seo({ description, title, children }) {
   const metaDescription = description || site.siteMetadata.description
   const defaultTitle = site.siteMetadata?.title
 
+  const titleToShow = defaultTitle
+    ? defaultTileOnly
+      ? defaultTitle
+      : `${title} | ${defaultTitle}`
+    : title
+
+  const imageCard = _imageCard
+    ? _imageCard.startsWith("http")
+      ? _imageCard
+      : `https://thoughts.dillionmegida.com${_imageCard}`
+    : DEFAULT_IMAGE
+
   return (
     <>
-      <title>{defaultTitle ? `${title} | ${defaultTitle}` : title}</title>
+      <title>{titleToShow}</title>
       <meta name="description" content={metaDescription} />
-      <meta property="og:title" content={title} />
+
+      <meta property="og:title" content={titleToShow} />
       <meta property="og:description" content={metaDescription} />
-      <meta property="og:type" content="website" />
-      <meta name="twitter:card" content="summary" />
-      <meta name="twitter:creator" content={site.siteMetadata?.author || ``} />
-      <meta name="twitter:title" content={title} />
+      <meta property="og:type" content="article" />
+      <meta property="og:image" content={imageCard} />
+
+      <meta
+        name="twitter:creator"
+        content={site.siteMetadata?.social?.twitter || ``}
+      />
+      <meta name="twitter:title" content={titleToShow} />
       <meta name="twitter:description" content={metaDescription} />
       {children}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:site" content="@iamdillion" />
+      <meta name="twitter:image" content={imageCard} />
+      <meta name="twitter:creator" content="iamdillion" />
+      <meta name="referrer" content="origin-when-crossorigin" />
     </>
   )
 }
