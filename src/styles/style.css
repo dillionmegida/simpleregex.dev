@@ -52,7 +52,7 @@
     --fontSize-5: 2.074rem;
     --fontSize-6: 2.488rem;
     --fontSize-7: 2.986rem;
-    --color-primary: rgb(247, 188, 248);
+    --color-primary: #A7FF72;
     --color-primary-light: rgb(255, 205, 255);
     --color-text: #2e353f;
     --color-text-light: #4f5969;
@@ -60,7 +60,7 @@
     --color-heading-black: black;
     --color-accent: #d1dce5;
   
-    background-color: rgb(30, 30, 30);
+    background-color:#10160c;
   }
   
   /* HTML elements */
