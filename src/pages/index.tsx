@@ -11,7 +11,7 @@ const IndexPage = ({ data, location }) => {
 
   if (posts.length === 0) {
     return (
-      <Layout location={location} title={siteTitle}>
+      <Layout title={siteTitle}>
         <Bio />
         <p>
           No blog posts found. Add markdown posts to "content/blog" (or the
@@ -23,7 +23,7 @@ const IndexPage = ({ data, location }) => {
   }
 
   return (
-    <Layout location={location} title={siteTitle}>
+    <Layout title={siteTitle}>
       <Bio />
       <ol style={{ listStyle: `none` }}>
         {/* {posts.map(post => {
