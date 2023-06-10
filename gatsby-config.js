@@ -71,9 +71,10 @@ module.exports = {
       options: {
         trackingIds: ["G-YNPDWE075X"],
         gtagConfig: {
+          head: true,
           anonymize_ip: true,
           cookie_expires: 0,
-          send_page_view: true
+          send_page_view: true,
         },
         pluginConfig: {
           head: false,
