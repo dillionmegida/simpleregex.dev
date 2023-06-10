@@ -4,6 +4,15 @@ import { graphql } from "gatsby"
 import Bio from "../components/bio"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
+import styled from "styled-components"
+
+const Cover = styled.div`
+  width: 100%;
+
+  img {
+    width: 100%;
+  }
+`
 
 const IndexPage = ({ data }) => {
   const siteTitle = data.site.siteMetadata?.title || `Title`
@@ -12,6 +21,12 @@ const IndexPage = ({ data }) => {
   if (posts.length === 0) {
     return (
       <Layout title={siteTitle}>
+        <Cover className="cover">
+          <img
+            src="/regex-course-cover.png"
+            alt="Regular Expressions Course Cover"
+          />
+        </Cover>
         <Bio />
         <p>
           No blog posts found. Add markdown posts to "content/blog" (or the
@@ -53,6 +68,7 @@ const IndexPage = ({ data }) => {
           )
         })} */}
       </ol>
+      <footer>© {new Date().getFullYear()}</footer>
     </Layout>
   )
 }
