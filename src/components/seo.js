@@ -1,7 +1,7 @@
 import * as React from "react"
 import { useStaticQuery, graphql } from "gatsby"
 
-const DEFAULT_IMAGE = ""
+const DEFAULT_IMAGE = "https://simpleregex.com/regex-course-cover.png"
 
 const Seo = ({
   description,
@@ -38,7 +38,7 @@ const Seo = ({
   const imageCard = _imageCard
     ? _imageCard.startsWith("http")
       ? _imageCard
-      : `https://thoughts.dillionmegida.com${_imageCard}`
+      : `https://simpleregex.com${_imageCard}`
     : DEFAULT_IMAGE
 
   return (
