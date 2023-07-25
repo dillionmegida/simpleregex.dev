@@ -32,7 +32,7 @@ const Header = styled.header<{ size: "xl" | "l" }>`
     --font-size: 40px;
   }
 
-  &::before {
+  /* &::before {
     content: "";
     position: absolute;
     inset: 0 -50px;
@@ -44,7 +44,7 @@ const Header = styled.header<{ size: "xl" | "l" }>`
     background-blend-mode: difference;
     filter: blur(2px) contrast(100) brightness(40);
     mix-blend-mode: darken;
-  }
+  } */
 
   .regex-pro-text {
     text-align: center;

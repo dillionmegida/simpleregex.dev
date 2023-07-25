@@ -8,8 +8,8 @@ module.exports = {
       name: `Dillion Megida`,
       summary: `who lives in the Netherlands and is exploring and learning more about life each day.`,
     },
-    description: `A starter blog demonstrating what Gatsby can do.`,
-    siteUrl: `https://gatsbystarterblogsource.gatsbyjs.io/`,
+    description: `A simplified course to help you understand Regular Expresions`,
+    siteUrl: `https://simpleregex.com/`,
     social: {
       twitter: `iamdillion`,
     },
@@ -48,7 +48,6 @@ module.exports = {
               wrapperStyle: `margin-bottom: 1.0725rem`,
             },
           },
-          `gatsby-remark-prismjs`,
         ],
       },
     },
@@ -57,15 +56,12 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `Gatsby Starter Blog`,
-        short_name: `Gatsby`,
+        name: `SimpleRegex`,
+        short_name: `simpleregex`,
         start_url: `/`,
         background_color: `#ffffff`,
-        // This will impact how browsers show your PWA/website
-        // https://css-tricks.com/meta-theme-color-and-trickery/
-        // theme_color: `#663399`,
         display: `minimal-ui`,
-        icon: `static/logo.png`, // This path is relative to the root of the site.
+        icon: `static/logo.png`,
       },
     },
     {

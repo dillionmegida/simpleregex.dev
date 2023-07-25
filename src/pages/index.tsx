@@ -96,7 +96,6 @@ const IndexPage = ({ data }) => {
           </a>
           .
         </p>
-        <div className="written-version"></div>
         <Outline>
           <h2>Outline</h2>
           <p>Here is the written version of the course</p>
@@ -122,11 +121,6 @@ const IndexPage = ({ data }) => {
 
 export default IndexPage
 
-/**
- * Head export to define metadata for the page
- *
- * See: https://www.gatsbyjs.com/docs/reference/built-in-components/gatsby-head/
- */
 export const Head = () => (
   <Seo defaultTileOnly title="Simplified Regular Expressions" />
 )
