@@ -7,8 +7,8 @@ export default function useRegex({ input, pattern, type = "match" }) {
   const [invalidRegex, setInvalidRegex] = useState("")
   const [editingMode, setEditingMode] = useState(input === "" || pattern === "")
 
-  const is_dev = process.env.NODE_ENV === "development"
-  //   const is_dev = false
+//   const is_dev = process.env.NODE_ENV === "development"
+    const is_dev = false
 
   const findMatches = () => {
     if (inputState === "" && patternState === "") return

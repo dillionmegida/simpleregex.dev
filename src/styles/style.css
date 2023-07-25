@@ -178,3 +178,19 @@ p {
 .sec-font {
   font-family: var(--font-body);
 }
+
+button {
+  cursor: pointer;
+}
+
+.flex {
+  display: flex;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+.align-center {
+  align-items: center;
+}

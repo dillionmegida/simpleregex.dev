@@ -6,7 +6,7 @@ export const getUrlString = (
   pattern: string,
   withoutOrigin: boolean = false
 ): string => {
-  return `${withoutOrigin ? "" : location.origin}/regex?input=${encode(
+  return `${withoutOrigin ? "" : location.origin}/test?input=${encode(
     `"${input}"`
   )}&pattern=${encode(`${pattern}`)}`
 }

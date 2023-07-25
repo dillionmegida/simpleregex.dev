@@ -15,7 +15,7 @@ text-align: center;
   }
 `
 
-const Layout = ({ Header, title, children }) => {
+const Layout = ({ Header, children }) => {
   return (
     <div>
       {Header}
