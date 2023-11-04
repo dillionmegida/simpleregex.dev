@@ -9,13 +9,21 @@ import LandingHeader from "../components/landing-header"
 const Body = styled.div`
   color: white;
   &.container {
-    padding: 50px 20px;
+    padding: 50px 30px;
+  }
+
+  .sec-font {
+    font-size: 25px;
   }
 
   p,
   li {
     font-size: 20px;
     line-height: 30px;
+  }
+
+  p {
+    line-height: 40px;
   }
 
   .highlight {
@@ -53,22 +61,49 @@ const Body = styled.div`
       box-shadow: 15px 15px 0 var(--color-regex-dark-3);
     }
   }
-
-  .written-version {
-    margin-top: 50px;
-  }
 `
 
 const Outline = styled.div`
+margin-top: 30px;
   ol {
-    padding-left: 20px;
+    display: grid;
+    padding: 0;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
   }
 
   li {
-    list-style-type: decimal;
-    padding-left: 5px;
+    list-style-type: none;
+    /* padding-left: 5px; */
     a {
-      /* color: var(--color-regex-dark-3); */
+      display: block;
+      background-color: color-mix(in srgb, var(--color-regex), black 90%);
+      text-decoration: none;
+      font-weight: 700;
+      padding: 30px;
+      transition: color 300ms, background-color 300ms, border-color 300ms;
+      position: relative;
+      border: 2px solid transparent;
+      border-top: 2px solid white;
+      border-radius: 5px;
+
+      &:hover {
+        color: white;
+        border: 2px solid white;
+        background-color: color-mix(in srgb, var(--color-regex), black 90%);
+      }
+
+      /* &::after {
+        content: "";
+        border-radius: 5px;
+        position: absolute;
+        top: -3px;
+        left: 0;
+        z-index: -1;
+        background-color: white;
+        width: 100%;
+        height: 20px;
+      } */
     }
   }
 `
@@ -87,7 +122,10 @@ const IndexPage = ({ data }) => {
           learn. And that's the inspiration behind the course.
         </p>
         <div className="help">
-          <p>I'll help you understand Regular Expressions 😉</p>
+          <p>
+            <span className="highlight">/</span> I'll help you understand
+            Regular Expressions 😉 <span className="highlight">/g</span>
+          </p>
         </div>
         <p>
           This course is available on{" "}
