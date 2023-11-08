@@ -35,7 +35,7 @@ const Wrapper = styled.div`
     width: max-content;
     font-family: var(--font-heading);
     display: block;
-    margin: 0 auto;
+    margin: 20px auto;
   }
 
   .content {
@@ -73,7 +73,8 @@ const Wrapper = styled.div`
   }
 
   .inline-code {
-    font-size: calc(var(--font-size) - 3px);
+    font-size: inherit;
+    background-color: #aaaaaa22;
   }
 
   .multiline-code {
@@ -116,6 +117,8 @@ const Wrapper = styled.div`
   h2 {
     color: var(--color-regex);
   }
+
+  
 
   .youtube-iframe {
     margin-bottom: 30px;

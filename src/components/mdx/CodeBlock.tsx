@@ -12,6 +12,7 @@ const Inline = styled.span<{ theme }>`
 const Multiline = styled.div`
   font-family: "Roboto Mono";
   width: 100%;
+  font-size: 18px;
 
   .block {
     padding: 25px 40px 25px 20px;
@@ -53,44 +54,55 @@ export default function CodeBlock({
   return (
     <Multiline className="multiline-code">
       <Highlight theme={themes.dracula} code={children} language={language}>
-        {({ style, tokens, getLineProps, getTokenProps }) => (
-          <pre className="block" style={{ ...style }}>
-            {tokens.map((line, index) => {
-              const lineProps = getLineProps({ line, key: index })
-              return (
-                <div key={index} {...lineProps}>
-                  {line.map((token, key, i) => {
-                    if (
-                      (token.content.includes("<hi>") ||
-                        token.content.includes("``")) &&
-                      token.types.includes("plain")
-                    ) {
-                      return (
-                        <span
-                          dangerouslySetInnerHTML={{
-                            __html: token.content
-                              .replace(
-                                /``.*?``/g,
-                                match =>
-                                  `<span class='inline-highlight'>${match.substring(2, match.length - 2)}</span>`
-                              )
-                              .replace(
-                                /<hi>/g,
-                                `<span class='inline-highlight'>`
-                              )
-                              .replace(/<\/hi>/g, "</span>"),
-                          }}
-                        />
-                      )
-                    }
+        {({ style, tokens, getLineProps, getTokenProps }) => {
+          if (tokens && tokens[tokens.length - 1][0].content === "\n") {
+            tokens.pop()
+          }
 
-                    return <span key={key} {...getTokenProps({ token, key })} />
-                  })}
-                </div>
-              )
-            })}
-          </pre>
-        )}
+          return (
+            <pre className="block" style={{ ...style }}>
+              {tokens.map((line, index) => {
+                const lineProps = getLineProps({ line, key: index })
+                return (
+                  <div key={index} {...lineProps}>
+                    {line.map((token, key, i) => {
+                      if (
+                        (token.content.includes("<hi>") ||
+                          token.content.includes("``")) &&
+                        token.types.includes("plain")
+                      ) {
+                        return (
+                          <span
+                            dangerouslySetInnerHTML={{
+                              __html: token.content
+                                .replace(
+                                  /``.*?``/g,
+                                  match =>
+                                    `<span class='inline-highlight'>${match.substring(
+                                      2,
+                                      match.length - 2
+                                    )}</span>`
+                                )
+                                .replace(
+                                  /<hi>/g,
+                                  `<span class='inline-highlight'>`
+                                )
+                                .replace(/<\/hi>/g, "</span>"),
+                            }}
+                          />
+                        )
+                      }
+
+                      return (
+                        <span key={key} {...getTokenProps({ token, key })} />
+                      )
+                    })}
+                  </div>
+                )
+              })}
+            </pre>
+          )
+        }}
       </Highlight>
     </Multiline>
   )
