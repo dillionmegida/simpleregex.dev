@@ -1,5 +1,6 @@
 ---
 title: Terms used in Regular Expressions
+shortTitle: Terms
 date: "2023-06-17"
 description: "Testing out stuff"
 cover: terms-cover.png
@@ -10,38 +11,34 @@ When talking about Regex patterns, there are a some terms you’d hear a lot and
 
 ## String
 
-First term is String.
-
-A string is a combination of characters which you apply a regular expression to. A string can be a letter, like “a”; it can be a word like “javascript” or it can be a sentence like “I bought 2 shoes for $5 from the market”. When you apply a pattern on a string, you can get the parts of that string (which we can call substrings) that match.
+A string is a combination of characters which you apply a regular expression to. A string can be a letter, like `“a”`; it can be a word like `“javascript”` or it can be a sentence like `“I bought 2 shoes for $5 from the market”`. When you apply a pattern on a string, you can get the parts of that string (which we can call **substrings**) that match.
 
 ## Digits
 
-Another term is Digits.
-
-Digits refers to numbers, which are 0, 1, 2, 3, 4, 5, 6, 7, 8 and 9
+Digits refers to numbers, which are `0` `1` `2` `3` `4` `5` `6` `7` `8` and `9`.
 
 ## Letters
 
-Or you can also call them alphabets, which refers to A, B, C to Z
+Or you can also call them alphabets, which refers to `A` `B` `C` to `Z`
 
-Letters can be of different cases. You can have uppercase A, B, C, and lowercase a, b, c.
+Letters can be of different cases. You can have uppercase `A` `B` `C` and lowercase `a` `b` `c`.
 
 ## Symbols
 
-A symbol is a character, which you can call a sign. These are not letters or digits. They are characters that can have special meanings. For examples:
+A symbol is a character, which you can call a **sign**. These are not letters or digits. They are characters that can have special meanings. For examples:
 
-- the dollar $ sign
-- the period . sign
-- the plus + sign
-- the exclamation sign
-- the backward slash \ sign
+- the dollar `$` sign
+- the period `.` sign
+- the plus `+` sign
+- the exclamation `!` sign
+- the backward slash `\` sign
 - and many more…
 
 There are so many symbol characters, and as we will see in this course, some of these characters can perform different functions in regex patterns.
 
 ## Whitespace
 
-A whitespace is a character, or you can call it a space, refers to a vertical or horizontal space.
+A whitespace is a character, or you can call it a **space**, which refers to a vertical or horizontal space.
 
 **For the horizontal space:**
 
@@ -58,26 +55,22 @@ Hello
 World
 ```
 
-This can also be called a line break.
+This can also be called a **line break**.
 
 ## Character
 
-When you see “character”, it means digits, or letters, or symbols or whitespaces. All of these classifies as characters. A string can be made up of one or more characters.
+When you see “character”, it means **digits**, or **letters**, or **symbols** or **whitespaces**. A string can be made up of one or more characters.
 
 ## Pattern
 
-This refers to a regular expression, which can match a combination of characters. A pattern can be as simple as… for example can be number, followed by string, followed by number. Or it can symbol, followed by 4 letter words, a space, and one letter.
-
-When you see or hear me saying pattern, regex, regex pattern, or regular expression, I’m referring to the same thing. I’ll use these words interchangeably in this course
+This refers to a regular expression, which can match a combination of characters. A pattern can be as simple as, for example, a number, followed by string, followed by number. Or it can be a symbol, followed by 4 letter words, then a space, and one letter.
 
 ## Flags
 
 Regular Expression patterns have some behaviours by default. Flags are optional characters you can add to the end of your pattern to change some of those default behaviours.
 
-if you don’t understand what i’m saying now
+If you don’t understand what I’m saying now, do not worry. We'll look at flags in the <CourseLink course='regex' path='flags' label='flags lesson' />.
 
-## Summary
+---
 
-Here’s a summary of all these terms on the screen. We’ll use these terms in several videos in this course, so it’s important to keep them in mind, so that you understand the things I explain.
-
-Now, let’s move on to learning how to create a regex pattern.
+Now, let’s move on to learning <CourseLink course='regex' path='first-regular-expression' label='how to create a regex pattern' />.

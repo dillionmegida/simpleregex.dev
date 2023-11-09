@@ -2,17 +2,19 @@ import React from "react"
 import { Highlight, themes } from "prism-react-renderer"
 import styled from "styled-components"
 
-const Inline = styled.span<{ theme }>`
-  padding: 4px;
-  background-color: ${({ theme }) => theme.bg};
+const Inline = styled.span`
+  padding: 0 4px;
   border-radius: 5px;
   font-family: "Roboto Mono";
+  font-size: inherit;
+  background-color: color-mix(in srgb, white, transparent 80%);
+  border: 2px solid color-mix(in srgb, white, transparent 90%);
 `
 
 const Multiline = styled.div`
   font-family: "Roboto Mono";
   width: 100%;
-  font-size: 18px;
+  font-size: 1.025rem;
 
   .block {
     padding: 25px 40px 25px 20px;
@@ -41,15 +43,7 @@ export default function CodeBlock({
 
   const inline = !className
 
-  if (inline)
-    return (
-      <Inline
-        className="inline-code"
-        theme={{ bg: `var(--color-${category}-dark-3)` }}
-      >
-        {children}
-      </Inline>
-    )
+  if (inline) return <Inline className="inline-code">{children}</Inline>
 
   return (
     <Multiline className="multiline-code">

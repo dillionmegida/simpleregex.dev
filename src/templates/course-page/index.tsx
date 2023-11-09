@@ -72,13 +72,13 @@ const Wrapper = styled.div`
     }
   }
 
-  .inline-code {
-    font-size: inherit;
-    background-color: #aaaaaa22;
-  }
-
   .multiline-code {
     font-size: calc(var(--font-size) - 2px);
+  }
+
+  p {
+    font-size: 1.3rem;
+    line-height: 1.6;
   }
 
   a {
@@ -90,9 +90,18 @@ const Wrapper = styled.div`
     }
   }
 
+  blockquote {
+    margin: 10px 0;
+    font-style: italic;
+    padding: 20px;
+    background-color: var(--color-regex-dark-1);
+    border: 1px solid var(--color-regex-dark-3);
+  }
+
   ul,
   ol {
     padding-left: 20px;
+    margin-top: 0;
     list-style-position: initial;
     li {
       margin-bottom: 10px;
@@ -117,8 +126,6 @@ const Wrapper = styled.div`
   h2 {
     color: var(--color-regex);
   }
-
-  
 
   .youtube-iframe {
     margin-bottom: 30px;

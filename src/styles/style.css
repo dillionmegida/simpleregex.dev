@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Poppins&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Lato:wght@400;900&display=swap");
 
 :root {
   --maxWidth-none: "none";
@@ -31,9 +31,9 @@
     BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
     sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
     "Noto Color Emoji";
-  --fontFamily-serif: "Poppins", "Georgia", Cambria, "Times New Roman", Times,
+  --fontFamily-poppins: "Lato", "Georgia", Cambria, "Times New Roman", Times,
     serif;
-  --font-body: var(--fontFamily-serif);
+  --font-body: var(--fontFamily-poppins);
   --font-heading: var(--fontFamily-sans);
   --fontWeight-normal: 400;
   --fontWeight-bold: 700;
@@ -63,6 +63,7 @@
   --color-regex: #a7ff72;
   --color-regex-light: #bbfb93;
   --color-regex-dark: #000c0c;
+  --color-regex-dark-1: #011919;
   --color-regex-dark-2: #011e1e;
   --color-regex-dark-3: #436131;
 
@@ -162,7 +163,12 @@ h6 > a {
 
 p {
   margin: 0;
-  padding: 15px 0;
+  padding: 10px 0;
+}
+
+hr {
+    border-color: var(--color-regex-dark-3);
+    margin: 40px 0;
 }
 
 .container {

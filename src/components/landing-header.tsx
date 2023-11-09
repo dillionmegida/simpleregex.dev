@@ -2,12 +2,12 @@ import React from "react"
 import styled from "styled-components"
 
 const headingSizes = {
-  xl: 100,
-  l: 80,
+  xl: 6.5,
+  l: 5,
 }
 
 const Header = styled.header<{ size: "xl" | "l" }>`
-  --font-size: ${({ size }) => headingSizes[size]}px;
+  --font-size: ${({ size }) => headingSizes[size]}rem;
 
   background-color: var(--color-regex-dark-2);
   margin: 0;
@@ -21,15 +21,15 @@ const Header = styled.header<{ size: "xl" | "l" }>`
   clip-path: polygon(0 0, 100% 0%, 100% 89%, 0% 100%);
 
   @media (max-width: 1000px) {
-    --font-size: 70px;
+    --font-size: 5rem;
   }
 
   @media (max-width: 800px) {
-    --font-size: 50px;
+    --font-size: 3rem;
   }
 
   @media (max-width: 500px) {
-    --font-size: 40px;
+    --font-size: 2.5rem;
   }
 
   /* &::before {

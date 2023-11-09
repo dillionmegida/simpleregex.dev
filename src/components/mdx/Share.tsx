@@ -6,13 +6,14 @@ const Container = styled.div`
   .share-btn,
   .share-link {
     padding: 15px 25px;
-    border: 1px solid var(--main-color);
+    border: 1px solid var(--color-regex);
     border-radius: 2px;
-    color: white;
-    transition: border-color 300ms;
+    color: var(--color-regex);
+    transition: border-color 300ms, color 300ms;
 
     &:hover {
       border-color: white;
+      color: white;
       text-decoration: none;
     }
   }

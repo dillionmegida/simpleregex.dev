@@ -10,4 +10,5 @@ export const LINKS = {
   "meta-characters": "/meta-characters",
 
   youtube: "https://youtube.com/@deeecode",
+  "playlist": "https://www.youtube.com/playlist?list=PLLdz3KlabJv1UVT8cZ-h4iI7fRqC_rArb"
 }

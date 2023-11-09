@@ -1,5 +1,6 @@
 import * as React from "react"
 import { Link, graphql } from "gatsby"
+import { LINKS } from "../constants"
 
 import Layout from "../components/layout"
 import Seo from "../components/seo"
@@ -13,12 +14,12 @@ const Body = styled.div`
   }
 
   .sec-font {
-    font-size: 25px;
+    font-size: 1.7rem;
   }
 
   p,
   li {
-    font-size: 20px;
+    font-size: 1.4rem;
     line-height: 30px;
   }
 
@@ -64,7 +65,20 @@ const Body = styled.div`
 `
 
 const Outline = styled.div`
-margin-top: 30px;
+  background-color: color-mix(in srgb, var(--color-regex), transparent 90%);
+  margin-top: 10px;
+  clip-path: polygon(0 4%, 100% 0, 100% 95%, 0% 100%);
+  padding: 30px 0;
+
+  h2,
+  p {
+    padding: 0;
+  }
+
+  p {
+    margin-bottom: 25px;
+  }
+
   ol {
     display: grid;
     padding: 0;
@@ -114,43 +128,44 @@ const IndexPage = ({ data }) => {
   return (
     <Layout Header={<LandingHeader />}>
       {/* <LandingPage /> */}
-      <Body className="container">
-        <p className="sec-font">
-          Regular Expressions are one of the{" "}
-          <span className="highlight">fundamentals</span> in Software
-          Development, but at the same time, not the easiest technology to
-          learn. And that's the inspiration behind the course.
-        </p>
-        <div className="help">
+      <Body>
+        <div className="container">
+          <p className="sec-font">
+            Regular Expressions are one of the{" "}
+            <span className="highlight">fundamentals</span> in Software
+            Development, but at the same time, not the easiest technology to
+            learn. And that's the inspiration behind the course.
+          </p>
+          <div className="help">
+            <p>
+              <span className="highlight">/</span> I'll help you understand
+              Regular Expressions 😉 <span className="highlight">/g</span>
+            </p>
+          </div>
           <p>
-            <span className="highlight">/</span> I'll help you understand
-            Regular Expressions 😉 <span className="highlight">/g</span>
+            This course is available on{" "}
+            <a href={LINKS.playlist}>my YouTube channel as a playlist</a>.
           </p>
         </div>
-        <p>
-          This course is available on{" "}
-          <a href="https://www.youtube.com/playlist?list=PLLdz3KlabJv1UVT8cZ-h4iI7fRqC_rArb">
-            my YouTube channel as a playlist
-          </a>
-          .
-        </p>
         <Outline>
-          <h2>Outline</h2>
-          <p>Here is the written version of the course</p>
-          <ol start={0}>
-            {items.map(item => {
-              const {
-                frontmatter: { title },
-                fields: { slug },
-              } = item
+          <div className="container">
+            <h2>Outline</h2>
+            <p>Here is the written version of the course</p>
+            <ol start={0}>
+              {items.map(item => {
+                const {
+                  frontmatter: { title, shortTitle },
+                  fields: { slug },
+                } = item
 
-              return (
-                <li>
-                  <Link to={slug}>{title}</Link>
-                </li>
-              )
-            })}
-          </ol>
+                return (
+                  <li>
+                    <Link to={slug}>{shortTitle}</Link>
+                  </li>
+                )
+              })}
+            </ol>
+          </div>
         </Outline>
       </Body>
     </Layout>
@@ -169,6 +184,7 @@ export const pageQuery = graphql`
       nodes {
         frontmatter {
           title
+          shortTitle
         }
         fields {
           slug

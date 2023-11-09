@@ -7,8 +7,7 @@ const Block = styled.div`
   /* margin-left: -30px; */
 
   a {
-    /* margin-right: 10px; */
-    font-size: 20px;
+    font-size: 1.25rem;
     visibility: hidden;
     position: relative;
     bottom: -15px;
