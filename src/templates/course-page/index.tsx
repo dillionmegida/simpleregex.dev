@@ -16,9 +16,17 @@ import Share from "../../components/mdx/Share"
 import LandingHeader from "../../components/landing-header"
 
 const Wrapper = styled.div`
-  --font-size: 19px;
+  --font-size: 1.3rem;
   font-size: var(--font-size);
   color: #dfdbdb;
+
+  img {
+    width: 100%;
+  }
+
+  .important-block {
+    margin: 30px 0;
+  }
 
   .go-home {
     text-align: center;
@@ -31,7 +39,7 @@ const Wrapper = styled.div`
     background-color: var(--color-regex);
     color: var(--color-regex-dark);
     padding: 5px;
-    font-size: 14px;
+    font-size: 0.8rem;
     width: max-content;
     font-family: var(--font-heading);
     display: block;
@@ -66,7 +74,6 @@ const Wrapper = styled.div`
     .main-content {
       width: 100%;
       width: 100%;
-      overflow-x: hidden;
       margin-top: 43px;
       margin-left: var(--side-bar-width);
     }
@@ -74,6 +81,18 @@ const Wrapper = styled.div`
 
   .multiline-code {
     font-size: calc(var(--font-size) - 2px);
+    position: relative;
+    isolation: isolate;
+
+    &::after {
+      content: "";
+      position: absolute;
+      background-color: var(--color-regex-dark-3);
+      border-radius: 5px;
+      inset: 15px;
+      z-index: -1;
+      transform: translateY(20px);
+    }
   }
 
   p {
@@ -91,11 +110,24 @@ const Wrapper = styled.div`
   }
 
   blockquote {
-    margin: 10px 0;
+    margin: 10px 0 20px;
     font-style: italic;
     padding: 20px;
     background-color: var(--color-regex-dark-1);
     border: 1px solid var(--color-regex-dark-3);
+    position: relative;
+    border-radius: 5px;
+    position: relative;
+
+    &::after {
+      content: "";
+      position: absolute;
+      background-color: var(--color-regex-dark-3);
+      border-radius: inherit;
+      inset: 0;
+      z-index: -1;
+      transform: translate(10px, 10px);
+    }
   }
 
   ul,
@@ -106,6 +138,10 @@ const Wrapper = styled.div`
     li {
       margin-bottom: 10px;
       padding-left: 10px;
+
+      a {
+        font-size: inherit;
+      }
     }
   }
 

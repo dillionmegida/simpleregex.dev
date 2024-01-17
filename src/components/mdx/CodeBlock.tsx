@@ -6,7 +6,8 @@ const Inline = styled.span`
   padding: 0 4px;
   border-radius: 5px;
   font-family: "Roboto Mono";
-  font-size: inherit;
+  letter-spacing: -1px;
+  font-size: calc(100% - 2px);
   background-color: color-mix(in srgb, white, transparent 80%);
   border: 2px solid color-mix(in srgb, white, transparent 90%);
 `

@@ -7,7 +7,9 @@ cover: character-class-cover.png
 youtubeId: Gjl5xGkiwak
 ---
 
-So far, we've seen how to create regular expressions, what flags are, and how regular expressions work under the hood. But all we've seen are simple string expressions (put `/code/` and `/name/`on screen). In this video, and the videos after this, we'll learn the different advanced or complex patterns we can create in regex.
+So far, we've seen <CourseLink course='regex' path="first-regular-expression" label='how to create regular expressions'/>, what <CourseLink course='regex' path="flags" label='flags'/> are, and <CourseLink course='regex' path="how-regular-expressions-work" label='how regular expressions work under the hood'/>. But all we've seen are simple string expressions like `/code/` and `/name/`.
+
+In this lesson, and the lessons after this, we'll learn the different advanced or complex patterns we can create in regex.
 
 For this lesson, we'll look at character classes.
 
@@ -21,9 +23,9 @@ You create a character class using square brackets `[...]`:
 /<hi>[</hi>characters<hi>]</hi>/
 ```
 
-In those square brackets, you specify the different characters for which one of them could match a string.
+In these square brackets, you specify the different characters for which one of them could match a string.
 
-### For Letters
+## For Letters
 
 Let's look at a character class for letters.
 
@@ -33,9 +35,9 @@ For example, let's say you want to match an a or an e before “pple” in a str
 /<hi>[ae]</hi>pple/g
 ```
 
-In this pattern, you have the character class which contains a and e, then after the character class, you have pple. I applied the `g` flag so we can get all matches.
+In this pattern, you have the character class which contains "a" and "e", then after the character class, you have "pple". I applied the `g` <CourseLink course='regex' path="flags" label='flag'/> so we can get all matches.
 
-And let's say we have a string such as “Is it spelt epple or apple?”:
+Let's say we have a string such as “Is it spelt epple or apple?”:
 
 <Regex pattern="/[ae]pple/g" input="Is it spelt epple or apple?" />
 
@@ -43,15 +45,13 @@ As you can see, "epple" and "apple" are matches for the pattern.
 
 For this pattern, the regex engine looks for an "a" or an "e". Upon finding either of these characters, the regex engine checks if the character is followed by "pple", before it considers the substring a match.
 
-This pattern will match "epple", which begins with "e", and "apple" which begins with "a". The character set here is made up of two characters: "a" and "e".
+This pattern will match "epple", which begins with "e", and "apple" which begins with "a".
 
-Note that this regular expression will not match “aepple”.
-
-Let's say I change apple to aepple:
+Note that this regular expression will not match “aepple”:
 
 <Regex pattern="/[ae]pple/g" input="Is it spelt epple or aepple?" />
 
-You see, "aepple" is not a match--only the "epple" part is a match. This is because a character class specifies a this or that value. It doesn't match “ae”, it only matches “a” or “e”.
+You see, "aepple" is not a match--only the "epple" part is a match. This is because a character class specifies a "this OR that" value not a "this and that". It doesn't match “ae”, it only matches “a” or “e”.
 
 ### For Digits
 
@@ -61,31 +61,35 @@ You can create character classes for digits too. For example:
 /``[246]``-people/g
 ```
 
-This character class in this pattern specifies 2 or 4 or 6. Remember, not 2 followed by 5 followed by 6. It is 2 or 4 or 6.. In the pattern, this means, 2 or 4 or 6, followed by "-", then "people".
+This character class in this pattern specifies 2 or 4 or 6. Remember, not 2 followed by 4 followed by 6. This pattern means, 2 or 4 or 6, followed by "-", then "people".
 
 Let's say we have a string like “He says there are 4-people, 6-people and 46-people”:
 
 <Regex pattern="/[246]-people/g" input="He says there are 4-people, 6-people and 46-people" />
 
-You see that 4-people and 6-people are matched.
+You see that "4-people" and "6-people" are matched.
 
-Again, you see that the string 46-people is not matched.
-
-That's because character classes specify a this or that, not a this and that.
+You also see that the string "46-people" is **not matched**.
 
 ### For Symbols
 
 You can create character classes for symbols too. For example:
 
-```jsx
-;/[&-]s/g
+```txt
+/``[&-]``s/g
 ```
 
-The character class in this pattern specifies the ampersand or hyphen symbol. And the whole pattern means ampersand or hyphen followed by the letter s.
+The character class in this pattern specifies the ampersand "&"" or hyphen symbol "-". And the whole pattern means "&" or "-" followed by the letter s.
 
-Let's say we have a string like “He used 5&s, 6%s and 7-s”. You see that &s and -s are matched.
+Let's say we have a string like “He used 5&s, 6%s and 7-s”:
 
-%s is not matched because % is not part of the character class.
+<Regex pattern="/[&-]s/g" input="He used 5&s, 6%s and 7-s" />
+
+You see that "&s" and "-s" are matched.
+
+"%s" is not matched because "%"" is not part of the character class. But if we add it to our character class, "%s" becomes a match:
+
+<Regex pattern="/[&%-]s/g" input="He used 5&s, 6%s and 7-s" />
 
 ## Range in Character Classes
 
@@ -93,91 +97,100 @@ In character classes, you can also specify a range.
 
 Let's say we want to match "bing", "sing", "ring", "king", and "ping". You can use a character set in a regex pattern like this:
 
-```jsx
-;/[bsrkp]ing/g
+```txt
+/``[bsrkp]``ing/g
 ```
 
-What if you want to match ALL four letter words that end in "ing", then your character set would look like this:
-`[abcdefghijklmnopqrstuvwxyz]ing`
+What if you want to match "ALL four letter words that end in 'ing'", then your character set would look like this:
 
-```jsx
-;/[abcdefghijklmnopqrstuvwxyz]ing/g
+```txt
+/``[abcdefghijklmnopqrstuvwxyz]``ing/g
 ```
 
-While this works, there's a way to improve it--making it shorter and more concise. You do this with ranges. With a range, instead of typing a, b, c, d, up all to z, you can simply specify the range of a to z like this:
+While this works, there's a way to improve it--making it shorter and more concise. You do this with **ranges**. With a range, instead of typing a, b, c, d, up all to z, you can simply specify the range of a to z like this:
 
-```jsx
-;/[a-z]ing/g
+```txt
+/``[a-z]``ing/g
 ```
 
 This range in the character class will match any word that starts with a letter between a to z, followed by "ing".
 
 Let's say we have a string like “He is a king, he likes to sing. He rings the bell. He pings the phone. He uses bing. Oh what a thing. He doesn't know the word ling”.
 
-Feel my rhymes? (with your glasses)
+Feel my rhymes? 🌝
+
+<Regex pattern="/[a-z]ing/g" input="He is a king, he likes to sing. He rings the bell. He pings the phone. He uses bing. Oh what a thing. He doesn't know the word ling" />
 
 For the matches, you see that all letters between a to z that are followed by ing, are matched. So using ranges makes your pattern shorter and concise.
 
-Also, you don't always have to use full ranges like a to z. You can also have shorter ranges like:
+## Partial Ranges
 
-```jsx
-;/[a-m]ing/
+you don't always have to use full ranges like a to z. You can also have shorter ranges like:
+
+```txt
+/``[a-m]``ing/g
 ```
 
-This pattern will match a substring which starts with a letter between a and m followed by ing.
+This pattern will match a substring which starts with a letter between "a" and "m" followed by "ing".
 
 Here's another example:
 
-```jsx
-;/[r-w]ing/
+```txt
+/``[r-w]``ing/g
 ```
 
-This pattern will match a substring which starts with a letter between r and w followed by ing.
+This pattern will match a substring which starts with a letter between "r" and "w" followed by "ing".
 
 You can also combine multiple ranges
 
-```jsx
-;/[b-jr-x]ses/
+```txt
+/``[b-jr-x]``ses/g
 ```
+
+## Ranges for different Cases
 
 The ranges we have looked at so far are lowercase ranges. You can have uppercase ranges too:
 
-```jsx
-;/[A-Z]ool/
+```txt
+/``[A-Z]``ool/g
 ```
 
 And if you do not want case strictness, you can simply add the case insensitive flag `i` as we saw in the previous videos:
 
-```jsx
-;/[a-z]est/i
+```txt
+/``[a-z]``est/``i``
 ```
 
 The character class in this pattern will match any letter between a and z whether in lowercase or uppercase.
 
 You can also apply ranges to digits. For example `0-9` will match all digits between 0 to 9:
 
-```jsx
-;/[0-9]/
+```txt
+/``[0-9]``/g
 ```
 
-2-5 will match all digits between 2 and 5
+`[2-5]` will match all digits between 2 and 5 and so on.
 
-```jsx
-;/[2-5]/
-```
+## Ranges for Symbols
 
-Unlike letters and digits, symbols do not have ranges, so you have to directly specify the symbols as we've seen earlier.
+Unlike letters and digits, symbols do not have ranges like `$-#`, so you have to directly specify the symbols as we've seen earlier.
+
+## Mixing Character Ranges
 
 You can mix letter and digit ranges in the character set:
 
-```jsx
-;/[a-z0-9]/
+```txt
+/``[a-z0-9]``/g
 ```
 
 You can also add symbols to the character set:
 
-```jsx
-;/[a-z0-9&-]ing/
+```txt
+/``[a-z0-9&-]``ing/g
 ```
 
-Don't forget, this character set will match any letter between a and z, OR (emphasis on OR), any number between 0 and 9, OR the ampersand symbol, OR the hyphen symbol, followed by ing.
+Don't forget, this character set will match any letter between "a" and "z", **OR** (emphasis on **OR**), any number between 0 and 9, OR the ampersand symbol "&", OR the hyphen symbol "-", followed by "ing".
+
+---
+
+A character class as we have seen allows us to match either-or characters in a set. But we can also create a class to match either-or characters that are not in a set. This is where a <CourseLink course='regex' path="negated-character-class" label='Negated Character Class'/> comes in.

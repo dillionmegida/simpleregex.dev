@@ -13,6 +13,16 @@ const Container = styled.div`
   color: white;
   width: 100%;
 
+  &::after {
+    content: "";
+    position: absolute;
+    background-color: var(--color-regex-dark-3);
+    border-radius: inherit;
+    inset: 15px;
+    z-index: -1;
+    transform: translateY(20px);
+  }
+
   .expand-link {
     position: absolute;
     right: 0;

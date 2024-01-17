@@ -13,15 +13,21 @@ In the previous lessons, we have looked at <CourseLink course='regex' path='char
 
 In Regex, we have normal characters, which as we have seen so far are letters, numbers, and symbols. But we also have meta characters.
 
-Meta characters are characters in regex which have a special meaning. This could mean that they represent a group of other characters, or have a special function when applied to regular expressions.
+Meta characters are characters in regex which represent a one or more characters. We have a couple of them across different regex engines, but we would look at some of the common ones:
 
-Let's look at some of the Meta Characters we have in regex.
+* [Whitespace Meta Character `\s`](#whitespace-meta-character-\s)
+* [Non-Whitespace Meta Character `\s`](#non-whitespace-meta-character-\s)
+* [Digit Meta Character `\d`](#digit-meta-character-\d)
+* [Non-Digit Meta Character `\D`](#non-digit-meta-character-\d)
+* [Word Meta Character `\w`](#word-meta-character-\w)
+* [Non-Word Meta Character `\W`](#non-word-meta-character-\w)
+* [Newline Meta Character `\W`](#newline-meta-character-\n)
 
 ## Whitespace Meta Character `\s`
 
 This meta character, written as backward slash lowercase s `\s`, matches a whitespace character.
 
-Remember that a whitespace is also a character as we saw in the <CourseLink course='regex' path='terms' label="Terms used in Regex lesson" />.
+Remember that a whitespace is also a character as we saw in the <CourseLink course='regex' path='terms' label="terms used in Regex lesson" />.
 
 A whitespace here can be a single space or tab space or a new line. Let's see an example where we use this meta character in a regular expression:
 
@@ -31,7 +37,10 @@ A whitespace here can be a single space or tab space or a new line. Let's see an
 
 This pattern means, a whitespace, followed by a character class of a range from a to z, which is repeated three times.
 
-Remember that this quantifier would be applied to the preceding character which is the character class in this pattern.
+<Important>
+
+Remember that this quantifier would be applied to the preceding character which is the character class in this pattern. It will not be applied to `\s[a-z]`, instead it would be applied to `[a-z]`
+</Important>
 
 Let's apply this to a string:
 
@@ -40,7 +49,7 @@ that bad`}  />
 
 As you can see in the matches:
 
-- even though we have the case insensitive flag i, it does not match “His” because the string it is not preceded by a space
+- even though we have the case insensitive flag `i`, it does not match “His” because the string it is not preceded by a space
 - " ide" is matched because it has space, then a character between a and z, three times, which is "i", "d" and "e"
 - " was" is matched
 - the vertical space, followed "tha" is also matched; the whitespace character applies to horizontal space as well as vertical space like the new line
@@ -52,14 +61,14 @@ This meta character, written as backward slash uppercase S `\S`, matches a non-w
 
 The whitespace meta character written with lowercase s `\s` matches whitespace characters, while this meta character, the non-whitespace, written with uppercase s `\S` matches characters that are not whitespace. Non-whitespace characters include digits, letters and symbols.
 
-This meta character can also be written as a negated character class containing a whitespace character: `[^\s]` which means match anything except a whitespace character.
+This meta character can also be written as a negated character class containing a whitespace character: `[^\s]` which means "match anything except a whitespace character".
 
-If you have seen the lesson yet on <CourseLink course='regex' path='negated-character-class' label="negated character classes" />, you should definitely check it out.
+If you haven't seen the lesson yet on <CourseLink course='regex' path='negated-character-class' label="negated character classes" />, you should definitely check it out.
 
 So let's see how we can use this meta character in a regular expression:
 
 ```txt
-``\S``{4}
+/``\S``{4}/
 ```
 
 This pattern means four characters followed by each other which is not a space.
@@ -80,10 +89,10 @@ This meta character, written as backward slash lowercase d `\d`, matches any dig
 For example, let's say we have this pattern:
 
 ```txt
-``\d``{3}
+/``\d``{3}/
 ```
 
-This means, any digit (1), followed by another digit (2), followed by another digit (3)
+This means, any digit (1), followed by another digit (2), followed by another digit (3).
 
 Let's apply this pattern to a string:
 
@@ -93,7 +102,7 @@ You see that the pattern matches "345" and "700". But it does not match "22", as
 
 ## Non-Digit Meta Character `\D`
 
-Just as we have an opposite for the whitespace meta character, lowercase s `\s`, we also have the opposite of the digit meta character lowercase d `\d`. This meta character is written as backward slash uppercase D `\D`.
+Just as we have an opposite for the whitespace meta character, we also have the opposite of the digit meta character. This meta character is written as backward slash uppercase D `\D`.
 
 This character matches any non-digit character. So this means it matches letters, spaces and symbols.
 
@@ -109,7 +118,7 @@ This pattern means, a digit, followed by a non-digit which is repeated for minim
 
 Let's apply this pattern on a string example:
 
-<Regex pattern="/\d\D{4,5}/g" input="She has 5cars, 6bikes, and 7bicycles"  />
+<Regex pattern="/\d\D{4,5}/g" input="She has 5cars1, 6bikes, and 7bicycles"  />
 
 You see the matches we have here are:
 
@@ -119,7 +128,9 @@ You see the matches we have here are:
 
 ## Word Meta Character `\w`
 
-This meta character, written as backward slash lowercase w `\w`, matches any word character and an underscore. Word characters here include letters and numbers. The letters can either be in upper or lowercase. This meta character character does not match symbols. The only exception is the underscore symbol `_`.
+This meta character, written as backward slash lowercase w `\w`, matches any word character and an underscore. Word characters here include letters and numbers. The letters can either be in upper or lowercase. 
+
+This meta character character does not match symbols. The only exception is the underscore symbol `_`.
 
 This meta character is an alternative to a character class containing letters in lower and uppercases, and numbers, and the underscore: `[a-zA-Z0-9_]`
 
@@ -185,7 +196,7 @@ You see that it doesn't match the first line break, but the second one because i
 
 ---
 
-If you were expecting a backward slash uppercase N `\N` as an opposite to the newline meta character, I'm sorry to tell you there's nothing like that 😅. At least at the moment.
+If you were expecting a backward slash uppercase N `\N` as an opposite to the newline meta character, I'm sorry to tell you there's nothing like that 😅. At least, at the moment.
 
 ## Summary
 
@@ -207,4 +218,6 @@ You can use these characters in your patterns in diverse ways. You can use them 
 - character classes: `/[^\s\w]/` → a negated character class which matches characters except a space and a word character
 - quantifiers: `/\w{5}\d/` → a pattern which matches word characters repeated 5 times followed by a number
 
-And as you would see in the rest of this video, you can use them in combination with other regex features.
+---
+
+And as you would see in the rest of this course, you can use them in combination with other regex features.

@@ -2,7 +2,7 @@
 title: Introduction to the Regular Expressions course
 shortTitle: Intro
 date: "2023-06-16"
-description: "Testing out stuff"
+description: "Let's finally understand everything about regex. In this simplified course, we would learn the different features available in regular expressions, and use those features with different examples."
 cover: regex-course-cover.png
 youtubeId: kX3WpzLRiW4
 ---
@@ -11,7 +11,7 @@ Let's finally understand everything about regex. Regex is short for **Regular Ex
 
 ## Goal of the Course
 
-The purpose of this course is to **help you understand regex**. I'll be simplifying regular expressions in a couple of videos. I'll be using many examples to explain and show you different regular expressions you can write for different needs.
+The purpose of this course is to **help you understand regex**. I'll be simplifying regular expressions in a couple of videos, using many examples to explain and show you different regular expressions you can write for different needs.
 
 Regular Expressions can be interesting, powerful, but also frustrating to create or get correctly. In my programming journey, I've struggled with understanding regular expressions. And when I think I finally understand it, I see a problem where I need to use it, and I get confused on how to use it. And I know it's not just me.
 
@@ -23,40 +23,43 @@ Can you read this?
 /^(https?:\/\/)?(www\.)?([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*\.)+[a-zA-Z]{2,}(\/[^\s]*)?$/
 ```
 
-
-Maybe you can't for now, but at the end of this course, we'll revisit this, and see if understand it.
+Maybe you can't for now, but at the end of this course, we'll revisit this, and see if you understand it.
 
 ## Why do we need Regular Expressions?
 
 Regular Expressions are used for creating patterns which match different parts of a string. Let's take this string for example:
 
-> “Hello, I have a bag worth $50, a shoe worth $100 and a hat worth $90”
+> “Hello, I have a bag worth **$50**, a shoe worth **$100** and a hat worth **$90**”
 
 Let's say we want to search this string for the word “bag”. It's easy right? We just need to search for a “b” followed by “a” followed by “g”. If things were always this straightforward, we wouldn't need regular expressions. But things are not always this literal.
 
-For example, what if we wanted to search this string for a dollar sign, followed by a number.
+For example, what if we wanted to search this string for a dollar sign $, followed by a number 0-9?
 
 You cannot simply search for a “dollar sign” followed by “5” followed by “0”, because even though that matches the “$50”, it does not match the “$100”. And it also doesn't match the “$90”.
 
-So for you to be able to accurately search for the part of this long string which starts with a dollar sign, and is followed with a number, be it 5, 10, 100, 1000, you need a regular expression.
+So for you to be able to accurately search for the part of this long string which starts with a dollar sign, and is followed with a number, be it 5, 10, 100, 1000, you need to create a **pattern**.
 
 Using a regular expression, you can define patterns like:
 * symbol followed by a number
 * letter preceded by a hyphen
 * a bunch of mixed characters in a particular order
-* and and so many advanced patterns.
+* and so many advanced patterns.
 
 ### Regex for Validation
 
-Regular expressions are not only for finding the parts of a string that matches a pattern. But they are also for validating that a string follows a pattern.
+Regular expressions are not only for finding the parts of a string that matches a pattern. They are also used for validating that a string follows a pattern.
 
 For example, in applications today, developers use regular expressions to validate that the string of an email address a user enters is valid. If the user provides something like `deeecode111@gmail.com`, the regular expression passes when tested with the string. If the user enters `my-javascript@yahoo`, the regular expression knows that this is invalid.
 
 As you can see, email addresses are not straightforward. It can involve numbers, hyphens, and can be short or long. We can't do a search for this without regular expressions.
 
-Developers also use regular expressions to validate that passwords meet a criteria. For example, you see in websites “your password must contain 1 letter, 1 number, and 1 symbol and must be 10 characters long”. You create a pattern for that, and test the password with the pattern, and you know if the password is valid or invalid.
+Developers also use regular expressions to validate that passwords meet a criteria. For example, you see in websites:
 
-There are so many other patterns you can create with Regular Expressions. It's not just the simple things like letter followed by number…no. As we progress in this course, you'd see the advanced patterns you can also write.
+> “your password must contain 1 letter, 1 number, and 1 symbol and must be 10 characters long”
+
+You create a pattern for that, and test the password with the pattern, and you know if the password is valid or invalid.
+
+There are so many other patterns you can create with Regular Expressions. It's not just the simple things like letter followed by number…no! As we progress in this course, you'd see the advanced patterns you can also write.
 
 ## Regular Expression is not just JavaScript
 
@@ -64,7 +67,7 @@ I also want to clarify that Regular Expressions are not only a feature in JavaSc
 
 But there can be slight differences which depends on the language or the compiler of the language.
 
-Regular Expressions as I will explain in this course is not only applied to JavaScript; you can apply the knowledge you learn here to several other languages that support regular expressions.
+Regular Expressions as I will explain in this course can be applied to not just JavaScript but to several other languages that support regular expressions.
 
 ## Topics We'll cover
 
@@ -82,12 +85,12 @@ For the second section, we'll look at how to create different patterns which inv
 5. <CourseLink course='regex' path="character-class" label='Character Classes'/>
 6. <CourseLink course='regex' path="quantifiers" label='Quantifiers'/>
 7. <CourseLink course='regex' path="meta-characters" label='Meta Characters'/>
-8. Special Characters
+8. <CourseLink course='regex' path="special-characters" label='Special Characters'/>
 9. Capturing Groups
 10. Alternation
 11. Lookarounds
 
-Then we wrap up.
+Then we,
 
 12. Wrap up
 
@@ -96,3 +99,5 @@ Then we wrap up.
 One more thing I want you to understand is there can be different patterns for something you want to match. With regular expressions, there's **no only one way**. There can be thousands of ways. For example, my regex pattern for validating an email address may be different from yours.
 
 One way might be more readable than another or shorter than other.
+
+---

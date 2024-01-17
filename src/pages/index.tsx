@@ -6,6 +6,7 @@ import Layout from "../components/layout"
 import Seo from "../components/seo"
 import styled from "styled-components"
 import LandingHeader from "../components/landing-header"
+import { truncateStr } from "../helpers/string"
 
 const Body = styled.div`
   color: white;
@@ -65,10 +66,18 @@ const Body = styled.div`
 `
 
 const Outline = styled.div`
-  background-color: color-mix(in srgb, var(--color-regex), transparent 90%);
+  /* background-color: color-mix(in srgb, var(--color-regex), transparent 90%); */
   margin-top: 10px;
-  clip-path: polygon(0 4%, 100% 0, 100% 95%, 0% 100%);
+  /* clip-path: polygon(0 4%, 100% 0, 100% 95%, 0% 100%); */
   padding: 30px 0;
+
+  .outline__header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    column-gap: 40px;
+
+  }
 
   h2,
   p {
@@ -76,48 +85,57 @@ const Outline = styled.div`
   }
 
   p {
-    margin-bottom: 25px;
   }
 
-  ol {
+  .outline__tag {
+    font-size: 1.1rem;
+    background-color: var(--color-regex-dark-3);
+    padding: 0 5px;
+    line-height: 1.2em;
+    margin-top: 3px;
+  }
+
+  .lessons {
     display: grid;
     padding: 0;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 40px;
+    gap: 20px;
+    grid-auto-rows: 1fr;
   }
 
-  li {
+  .lesson {
     list-style-type: none;
+    background-color: color-mix(in srgb, var(--color-regex), black 90%);
     /* padding-left: 5px; */
     a {
       display: block;
-      background-color: color-mix(in srgb, var(--color-regex), black 90%);
+      height: 100%;
       text-decoration: none;
-      font-weight: 700;
+
       padding: 30px;
       transition: color 300ms, background-color 300ms, border-color 300ms;
       position: relative;
       border: 2px solid transparent;
-      border-top: 2px solid white;
-      border-radius: 5px;
+      /* border-top: 2px solid white; */
+      /* border-radius: 5px; */
 
-      &:hover {
+      &:is(&:hover, &:focus) {
+        outline: none;
         color: white;
         border: 2px solid white;
         background-color: color-mix(in srgb, var(--color-regex), black 90%);
       }
+    }
 
-      /* &::after {
-        content: "";
-        border-radius: 5px;
-        position: absolute;
-        top: -3px;
-        left: 0;
-        z-index: -1;
-        background-color: white;
-        width: 100%;
-        height: 20px;
-      } */
+    .lesson__title {
+      font-weight: 700;
+      display: block;
+    }
+
+    .lesson__desc {
+      font-size: 1.1rem;
+      color: #e6e6e6;
+      line-height: 0.5em;
     }
   }
 `
@@ -147,20 +165,30 @@ const IndexPage = ({ data }) => {
             <a href={LINKS.playlist}>my YouTube channel as a playlist</a>.
           </p>
         </div>
+        <hr />
         <Outline>
           <div className="container">
-            <h2>Outline</h2>
-            <p>Here is the written version of the course</p>
-            <ol start={0}>
+            <div className="outline__header">
+              <h2>Outline</h2>
+              <p className="outline__tag">
+                Here is the written version of the course
+              </p>
+            </div>
+            <ol className="lessons" start={0}>
               {items.map(item => {
                 const {
-                  frontmatter: { title, shortTitle },
+                  frontmatter: { title, description, shortTitle },
                   fields: { slug },
                 } = item
 
                 return (
-                  <li>
-                    <Link to={slug}>{shortTitle}</Link>
+                  <li className="lesson">
+                    <Link to={slug}>
+                      <span className="lesson__title">{shortTitle}</span>
+                      <span className="lesson__desc">
+                        {truncateStr(description)}
+                      </span>
+                    </Link>
                   </li>
                 )
               })}
@@ -185,6 +213,7 @@ export const pageQuery = graphql`
         frontmatter {
           title
           shortTitle
+          description
         }
         fields {
           slug
