@@ -31,6 +31,21 @@ const Container = styled.div`
     color: var(--color-regex-dark);
   }
 
+  &.important-block a {
+    color: yellow;
+    background-color: var(--color-regex-dark-2);
+    padding: 2px 3px;
+    border-radius: 5px;
+    font-size: calc(100% - 1px);
+    transition: background-color 300ms, color 300ms;
+
+    &:hover {
+      background-color: yellow;
+      color: black;
+      text-decoration: none;
+    }
+  }
+
   p {
     margin: 0;
   }
@@ -38,7 +53,7 @@ const Container = styled.div`
 
 export default function ImportantBlock({ children }) {
   return (
-    <Container className='important-block'>
+    <Container className="important-block">
       <span className="label">Important</span>
       {children}
     </Container>

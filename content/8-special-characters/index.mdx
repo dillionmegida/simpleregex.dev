@@ -1,0 +1,368 @@
+---
+title: Special Characters in Regular Expressions
+shortTitle: Special Characters
+date: "2023-06-16"
+description: "Learn about Special Characters, and see how to use them for special functions in regex patterns."
+cover: special-characters-cover.png
+youtubeId: e-qorlWC3-8
+---
+
+Asides <CourseLink course='regex' path="meta-characters" label='meta characters'/> which we looked at previously, there are also special characters you can use for regex patterns.
+
+As we saw in meta characters, they are preceded by a backward slash. The whitespace, digit, and so on. But special characters are literal symbol characters, which just have a special meaning.
+
+<Important>
+Some special characters can exist alone, while others cannot--they have to be used with other characters.
+</Important>
+
+
+Let's look at the special characters we have in regular expressions.
+
+## Wildcard Character `.`
+
+The dot character, is called the Wildcard character. As a wildcard character, it matches ANY character. It matches a letter, a number, a space and even a symbol. The only character it does not match is the newline character.
+
+This special character can exist alone. Let's see an example pattern:
+
+```txt
+/b``.``{2}d/
+```
+
+This pattern matches any substring which starts from "b", followed by any character, repeated twice, then followed by d.
+
+A string example:
+
+<Regex pattern="/b.{2}d/g" input="Strange words like blood, b9ad, ba d, ba$d, and balod"  />
+
+This pattern matches “b9ad” as 9 and "a" are represented by the wildcard character repeated twice.
+
+“ba d” and “ba$d” are also matched.
+
+If I replace the space in this second match with a newline:
+
+<Regex pattern="/b.{2}d/g" input={`Strange words like blood, b9ad, ba
+d, ba$d, and balod`}  />
+
+You see that the pattern no longer matches the substring. That's because, like I mentioned earlier, the wildcard character does not match a newline. You can change this default behaviour with the **newline flag** `s` as we saw in the <CourseLink course='regex' path="flags" label='flags lesson'/>:
+
+<Regex pattern="/b.{2}d/gs" input={`Strange words like blood, b9ad, ba
+d, ba$d, and balod`}  />
+
+## Beginning Character `^`
+
+The caret character, also called an **anchor**, is called the Beginning character. It matches the beginning of a full string if the pattern that follows it can be found at the beginning of the string. Let's look at an example:
+
+```txt
+/``^``".{3,}"/
+```
+
+This pattern means, "match the beginning part of a string, if that part starts with a double quote, followed by any character repeated three or more times, followed by a double quote".
+
+String example:
+
+<Regex pattern={`/^".{3,}"/g`} input={`"No, I won't", he said`}  />
+
+As you can see here, the substring at the beginning is a match, because it has quotes, followed by some characters that matches the wildcard special character, then another quotes.
+
+But if I add a number to the beginning of this string:
+
+<Regex pattern={`/^".{3,}"/g`} input={`9"No, I won't", he said`}  />
+
+You see that it is no longer a match. That's because we used the beginning special character, and the substring that matches our pattern is not at the beginning.
+
+<Important>
+One question you may probably have right now is:
+
+*"What is the difference between the Negated Character Class, and the Beginning Special Character? Since they both use the caret symbol?"*
+
+I'll explain that difference in the <CourseLink course='regex' path="negated-character-class-vs-beginning-special-character" label='next lesson'/>.
+</Important>
+
+
+### Beginning Substrings on Different Lines
+Now, remember when we talked about the **multiline flag** `m` in the <CourseLink course='regex' path="flags" label='flags lesson'/>? This is where we apply it.
+
+Let's say we have two sentences in our string on different lines:
+
+<Regex pattern={`/^[oi]pple/g`} input={`opple is spelt wrong
+
+ipple is spelt wrong`}  />
+
+Our pattern has the beginning special character, followed by a <CourseLink course='regex' path="character-class" label='character class'/> with "o" and "i" followed by "pple".
+
+Even though we applied a global flag `g`, you can see that the only match we have is “opple”. “ipple” is not matched even though it begins the next line and matches our specified pattern.
+
+The reason for this is that by default, when using the beginning special character, the regular expression matches the whole string. It doesn't check if there's a new line in between strings. It matches every line together as one string.
+
+But watch what happens when I apply the multiline flag `m`:
+
+<Regex pattern={`/^[oi]pple/gm`} input={`opple is spelt wrong
+
+ipple is spelt wrong`}  />
+
+By applying this flag, you see that “ipple” is now matched which begins the string in the second line.
+
+The multiline flag changes the default behaviour by making the beginning special character match the beginning of each line, not just everything together as one string.
+
+## Ending Character `$`
+
+The dollar character, also called an anchor, is called the Ending Character. When you use this special character in a pattern, it does the opposite of the beginning special character; it matches the end part of a string, if that end part matches our pattern.
+
+It cannot be used alone, you need to use it after a pattern. Let's see an example:
+
+```txt
+/\s\w{4}``$``/g
+```
+
+This pattern matches the end part of a string if the end part has a space, followed by a word character repeated four times.
+
+String example:
+
+<Regex pattern="/\s\w{4}$/g" input={`She likes to play ball`}  />
+
+As you see here, the ending part " ball" is matched because the pattern is at the end of the string. 
+
+Now if I add a full stop to the end of the string:
+
+<Regex pattern="/\s\w{4}$/g" input={`She likes to play ball.`}  />
+
+
+You see that the end part is no longer a match. The string ends with full-stop which our pattern does not specify that the string ends with.
+
+What if we had a string that broke into two lines?
+
+<Regex pattern="/\s\w{4}$/g" input={`She likes to play ball
+They like to catch fish`}  />
+
+As you can see in this string, only the end part " fish" is a match. Just like the beginning special character, the ending special character, by default, treats the whole string as one string, even though there are line breaks. If we want to have multiple matches for different lines, then we include the multiline flag:
+
+<Regex pattern="/\s\w{4}$/gm" input={`She likes to play ball
+They like to catch fish`}  />
+
+Now we have " ball" and " fish" as matches since they end each line.
+
+<Important>
+Combining the beginning and ending special character allows you to **validate** a string from the beginning to the end. Useful for things like validating passwords, emails, e.t.c
+
+You can learn more about that <CourseLink course='regex' path="string-validation" label='in this lesson'/>
+</Important>
+
+## Escape Character `\`
+
+The backward slash character, represents the Escape character. What does "escaping" mean here?
+
+Let's see an example:
+
+<Regex pattern="/[a-z].com/g" input={`My website is a.com`}  />
+
+Our pattern has a character class with a range of "a" to "z", followed by ".", followed by "com". Which means this should match "a.com", "b.com", "c.com" and so on...right? 🤔
+
+But this regular expression will not work like you expect it to. This pattern will match “a.com”, but it will also match “a8com” or “a$com”:
+
+<Regex pattern="/[a-z].com/g" input={`My websites are a.com, a8com and a$com`}  />
+
+The reason is that, as we have seen earlier, the period sign is a wildcard special character which matches any character at all. That's why it matches "8" in "a8com" and "$" in "a$com".
+
+So how do we specify that we do not want the special period character, but we want the literal period sign? This is where the escape character comes in.
+
+As the name implies, this character is used to escape a character. It cannot be used by itself. It is used before the character you want to escape.
+
+Here's how we use it:
+
+```txt
+[a-z]``\.``com
+```
+
+In this pattern, we have defined that we want the normal "." character, and not the special "." character.
+When you now apply this on our string:
+
+<Regex pattern="/[a-z]\.com/g" input={`My websites are a.com, a8com and a$com`}  />
+
+You see it now matches only "a.com". That's because "8" is not "." and neither is "$".
+
+### Escaping Special Characters
+
+The escape special character is useful for escaping characters that by default have a different meaning in patterns. Examples are escaping the:
+
+- beginning special character `\^hello`
+- ending special character `hello\$`
+- and many other special characters.
+
+### Escaping the Escape Special Character
+
+
+You can also use the escape character to escape itself 😂
+
+By default, the backward slash has a special function, which is for escaping characters. But what if you had a string like: “He wrote it as hello\” and you wanted to match the end part of the string ending with hello and backward slash, then your pattern will be:
+
+```txt
+hello``\\``$
+```
+
+Here, you have specified that you do not want the special backward slash character, but the normal backward slash character after hello:
+
+<Regex pattern="/hello\\$/g" input={`He wrote it as hello\\`}  />
+
+In this case, you escaped the backward slash character, which means the dollar sign holds its special function which is for matching the end of strings. If I put something else after the end of the string:
+
+<Regex pattern="/hello\\$/g" input={`He wrote it as hello\\.`}  />
+
+You see it is no longer a match.
+
+### Escaping a Meta Character
+
+Also, you can escape a <CourseLink course='regex' path="meta-characters" label='meta character'/>. As we have seen previously, meta characters involve the use of backward slash. We saw the digit meta character written as backward slash d `\d`, the whitespace character written as backward slash s `\s` and many others.
+
+What if we wanted to write a pattern that matches the backward slash d in this string: “The author wrote \d”? 
+If we use a pattern like this:
+
+<Regex pattern="/\d/g" input="The author wrote \d"  />
+
+This is a digit meta character which matches a digit so it won't work.
+
+But here, we don't want to match a digit, but we want to match a backward slash d. In this case, we escape the meta character like this:
+
+<Regex pattern="/\\d/g" input="The author wrote \d"  />
+
+
+So this is how you use the escape character for escaping characters that have special meanings when you want the literal character.
+
+---
+
+There are still more special characters to look at. The remaining special characters we would be looking at are known as **quantifier special characters**. They work similarly to <CourseLink course='regex' path="quantifiers" label='quantifiers'/> which we have looked at previously.
+
+## Optional Character `?`
+
+The question mark, represents the optional character based on how you use it (it can do other things). As a special character, which is also a quantifier in this case, it matches **0 OR 1** of the preceding character. That's why it's called optional. Optional means it exists once or it doesn't exist.
+
+Take this string for example: “She has 5 apples and her brother has 1 apple”
+
+What if we wanted to write a pattern that matches apples and apple? Here’s how we can do it with the optional character:
+
+```txt
+/apple``s?``/g
+```
+
+
+Using the optional character after "s" means match **0 OR 1** s. Which means, "s is optional":
+
+<Regex pattern="/apples?/g" input="She has 5 apples and her brother has 1 apple"  />
+
+As you can see in the results, with the `g` flag applied, this pattern matches "apples" and "apple".
+
+Another example:
+
+<Regex pattern="/number-[0-9]?0/g" input="He is number-20, I am number-30, and she is number-0"  />
+
+Our pattern here is "number-" followed by a character class with a range of 0 to 9 which is optional, followed by "0".
+
+As you can see here, "number-20" is matched, "number-30" is matched. And lastly, you see "number-0" matched also. There's no other digit before the 0, but it matches because the digit is optional.
+
+<Important>
+When using this character, you can think of it as “the preceding character is optional”. Either the character does not exist, or it exists only once.
+</Important>
+
+If you want to use the curly brackets <CourseLink course='regex' path="quantifiers" label='quantifier'/> approach, that means this pattern will look like this:
+
+```txt
+/number-[0-9]``{0,1}``0/g
+```
+
+This means, a minimum of 0 occurrence, and a maximum of 1 occurrence. But you'd agree that `?` is shorter 😉
+
+## ONE OR MORE CHARACTER `+`
+
+The plus sign, represents the one or more character based on how you use it (can also be used for other things). As a quantifier in this case, it matches **1 OR MORE** of the preceding character.
+
+Let's say we have this string: “They have $200; he has $1 and she has $5000”
+
+How do we match the figures we have here? We can use the one or more special character like this:
+
+```txt
+/\$``\d+``/g
+```
+
+In this pattern, we have a dollar sign, which I've escaped because the dollar sign by default, is a special character that checks for a match at the end of a string. After the dollar sign, I have the digit meta character, backward slash d. By applying the one or more special character `+` after the digit meta character, it means, it will match ""1 OR MORE digits"".
+
+
+So this pattern matches a dollar sign, followed by 1 or more digits:
+
+<Regex pattern="/\$\d+/g" input="They have $200; he has $1 and she has $5000"  />
+
+As you can see in the matches, we have “$200”, “$1” and “$5000” matched.
+
+<Important>
+When using this character, you can think of it as “the preceding character must exist at least once”. It can be repeated as many times as possible, but it must exist.
+</Important>
+
+
+If we want to write this using the curly brackets quantifier, this would be:
+
+```txt
+/\$\d``{1,}``/g
+```
+
+Here, we specify a minimum of 1, a comma, and no maximum, which means, 1 or more. You'd agree again that `+` is shorter 😜
+
+## 0 OR MORE CHARACTER `*`
+
+The asterisk, or star sign, represents the 0 or more character based on how you use it. As a quantifier in this case, it matches **0 OR MORE** of the preceding character.
+
+Let's say we have this pattern:
+
+```txt
+/b``o*``ring/g
+```
+
+
+This pattern matches b, followed by o repeated 0 or more times, followed by "ring". Let's match it on a string:
+
+<Regex pattern="/bo*ring/g" input="He brings boring booooooooring jokes"  />
+
+You can see that “bring” (with no "o"s), “boring” (with 1 "o") and “booooooooring” (with 9 "o"s) are matches for the pattern.
+
+The "o" can exist 0 or 1 or 2 or as many times as possible.
+
+<Important>
+When using this character, you can think of it as “the preceding character can be optional or repeated as many times”.
+</Important>
+
+If we want to write this using the curly brackets quantifier, this would be:
+
+```txt
+/\$\d``{0,}``/g
+```
+
+Here, we specify a minimum of 0, a comma, and no maximum, which means, 0 or more. Do you agree or not that... 🌝
+
+---
+
+There are lot more special characters in regular expressions, some which we have been using in fact:
+* the square brackets for character classes `[...]`
+* the curly brackets for quantifiers `{...}`
+* even the `/` we use for the literal notation
+
+So if you need to match a literal "[" in your string, you have to escape it too: `\[`.
+
+However, not all symbols are special characters.
+
+## Wrap up
+
+We have looked at some special characters in regular expressions.
+
+<Important>
+Remember that meta characters are represented by a backward slash and a character, while special characters and symbol characters with special functions.
+</Important>
+
+Here are the special characters we looked at:
+- The Wildcard Character, `.`, which matches any character except a newline
+- Beginning Character, `^`, which looks for a match at the beginning of a string
+- Ending Character,  `$`, which looks for a match at the end of a string
+- Escape Character, `/`, which escapes other characters
+- Optional Character, `?`, which matches a character with 0 or 1 occurrence
+- One or more character, `+`, which matches a character with 1 or more occurrences
+- 0 or more character, `*`, which matches a character with 0 or more occurrences
+
+---
+
+Before we proceed to learn more advanced regex features, let's talk about <CourseLink course='regex' path="string-validation" label='string validation with regex'/>.

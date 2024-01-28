@@ -110,6 +110,7 @@ h6 {
   line-height: var(--lineHeight-tight);
   letter-spacing: -0.025em;
   padding: 10px 0;
+  scroll-margin-top: 50px;
 }
 
 h2,

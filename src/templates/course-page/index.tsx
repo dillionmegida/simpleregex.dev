@@ -225,7 +225,9 @@ export default function CoursePageTemplate({ location, data, children }) {
               {/* <CourseNav prevCourse={prevCourse} nextCourse={nextCourse} /> */}
 
               {/* <h1> {title}</h1> */}
-              <YouTube className="youtube-iframe" videoId={youtubeId} />
+              {youtubeId && (
+                <YouTube className="youtube-iframe" videoId={youtubeId} />
+              )}
               <MDXProvider components={components}>{children}</MDXProvider>
               <br />
               <Share title={title} url={`https://deeecode.com${slug}`} />

@@ -9,6 +9,8 @@ export const LINKS = {
   quantifiers: "/quantifiers",
   "meta-characters": "/meta-characters",
   "special-characters": "/special-characters",
+  "string-validation": "/string-validation",
+  "negated-character-class-vs-beginning-special-character": "/negated-character-class-vs-beginning-special-character",
 
   youtube: "https://youtube.com/@deeecode",
   "playlist": "https://www.youtube.com/playlist?list=PLLdz3KlabJv1UVT8cZ-h4iI7fRqC_rArb"

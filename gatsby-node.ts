@@ -15,7 +15,6 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
     
     const filepathRegex = /^\/([\d\.]+)-([\w-]+)/
 
-    
     const [, courseOrder, coursePath] = value.match(filepathRegex)
     
     const courseRelativePath = LINKS[coursePath]

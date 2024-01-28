@@ -7,8 +7,8 @@ export default function useRegex({ input, pattern, type = "match" }) {
   const [invalidRegex, setInvalidRegex] = useState("")
   const [editingMode, setEditingMode] = useState(input === "" || pattern === "")
 
-//   const is_dev = process.env.NODE_ENV === "development"
-    const is_dev = false
+  //   const is_dev = process.env.NODE_ENV === "development"
+  const is_dev = false
 
   const findMatches = () => {
     if (inputState === "" && patternState === "") return
@@ -22,14 +22,11 @@ export default function useRegex({ input, pattern, type = "match" }) {
 
       const regexPattern = new RegExp(patternAsString, flags)
 
-      const newModifiedString = (is_dev ? input : inputState).replace(
-        regexPattern,
-        match => {
-
-            if (input.startsWith('What does that mean?')) {
-                console.log(`"${match}"`)
-            }
-           
+      const newModifiedString = (is_dev ? input : inputState)
+        .replace(regexPattern, match => {
+          if (input.startsWith("What does that mean?")) {
+            console.log(`"${match}"`)
+          }
 
           if (match === "\n") {
             return `<span class='newline-end'></span><br/><span class='newline-start'></span>`
@@ -48,9 +45,8 @@ export default function useRegex({ input, pattern, type = "match" }) {
               .replace(/\n/g, "<br/>")
               .replace(/\s/g, "&nbsp;")}</span>`
           }
-        }
-      )
-      .replace(/\n/g, "<br/>")
+        })
+        .replace(/\n/g, "<br/>")
 
       setModifiedString(newModifiedString)
 
@@ -72,7 +68,11 @@ export default function useRegex({ input, pattern, type = "match" }) {
         is_dev ? pattern : patternState
       ).match(regexRegex)
 
-      const regexPattern = new RegExp(`^${patternAsString}$`, flags)
+      const patternWithSpecialChars = patternAsString.startsWith("^")
+        ? patternAsString
+        : `^${patternAsString}$`
+
+      const regexPattern = new RegExp(patternWithSpecialChars, flags)
 
       const isValid = regexPattern.test(is_dev ? input : inputState)
 

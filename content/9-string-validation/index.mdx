@@ -1,0 +1,44 @@
+---
+title: String Validation with Special Characters
+shortTitle: String Validation
+date: "2023-06-16"
+description: "How to use the beginning and ending special character for String Validation."
+cover: special-characters-cover.png
+# youtubeId: e-qorlWC3-8
+---
+
+In the <CourseLink course='regex' path="special-characters"  label="previous lesson" />, we learnt about the:
+* Beginning Special Character `^`, for matching the beginning of a string, and the
+* Ending Special Character `$`, for matching the ending of a string
+
+By combining these special characters in a pattern, we can **validate** a string from the beginning to the end. Let's see some examples:
+
+## Validating a password
+
+Let's say you have a password requirement like: **"8 characters minimum, only numbers, letters and underscore allowed"**.
+
+Here's a regex pattern for that:
+
+```txt
+``^``\w{8,}``$``
+```
+
+In this pattern, you have `\w{8,}` which means **8 or more word characters**. `\w` represents a word <CourseLink course='regex' path="meta-characters"  label="meta character" /> which matches numbers, letters and the underscore.
+
+By having the `^` at the beginning and `$` at the end, the regex pattern now matches "the whole string from beginning to end". Let's apply this on some strings:
+
+<Regex pattern="/^\w{8,}$/" input="mypassword" type='validate' />
+
+Positive validation because "mypassword" is 10 characters (more than 8) and contains letters.
+
+<Regex pattern="/^\w{8,}$/" input="anew$password" type='validate' />
+
+Negative validation because although "anew$password" is 13 characters (more than 8), it contains a symbol that doesn't match the `\w` meta character.
+
+<Regex pattern="/^\w{8,}$/" input="hello123456789" type='validate' />
+
+Positive validation because "hello123456789" is 14 characters (more than 8) and contains letters and numbers.
+
+<Regex pattern="/^\w{8,}$/" input="somethi" type='validate' />
+
+Negative validation because "somethi" is 7 characters, less than 8.
