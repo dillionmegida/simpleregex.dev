@@ -1,4 +1,4 @@
-import React from "react"
+import React, { ReactNode } from "react"
 import styled from "styled-components"
 
 const headingSizes = {
@@ -88,7 +88,13 @@ const Header = styled.header<{ size: "xl" | "l" }>`
   }
 `
 
-export default function LandingHeader({ children = null, size = "xl" }) {
+export default function LandingHeader({
+  children = null,
+  size = "xl",
+}: {
+  children: ReactNode
+  size: "xl" | "l"
+}) {
   if (children) {
     return (
       <Header size={size}>
