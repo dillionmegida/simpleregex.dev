@@ -13,34 +13,7 @@ import RegexBlock from "../../components/mdx/RegexBlock"
 import ImportantBlock from "../../components/mdx/ImportantBlock"
 import Share from "../../components/mdx/Share"
 import LandingHeader from "../../components/landing-header"
-
-import { initializeApp } from "firebase/app"
-import {
-  getFirestore,
-  collection,
-  getDocs,
-  doc,
-  setDoc,
-  where,
-  query,
-  addDoc,
-} from "firebase/firestore/lite"
-
-const firebaseConfig = {
-  apiKey: "AIzaSyBbEdLB6dugoO7Dde4I1CZ5RUdSUVfb2PE",
-  authDomain: "simple-regex-website.firebaseapp.com",
-  projectId: "simple-regex-website",
-  storageBucket: "simple-regex-website.appspot.com",
-  messagingSenderId: "561519319922",
-  appId: "1:561519319922:web:2bc4e869bbef6d1c11dbeb",
-}
-
-let app, db
-
-if (typeof window !== "undefined") {
-  app = initializeApp(firebaseConfig)
-  db = getFirestore(app)
-}
+import usePageViews from "../../hooks/usePageViews"
 
 const Wrapper = styled.div`
   --font-size: 1.3rem;
@@ -223,9 +196,6 @@ const components = {
 }
 
 export default function CoursePageTemplate({ location, data, children }) {
-  const [viewsCount, setViewsCount] = React.useState<null | number>(null)
-  const [currentDocId, setCurrentDocId] = React.useState<null | string>(null)
-
   const {
     frontmatter: { title, youtubeId },
     fields: { orderId, slug },
@@ -233,60 +203,7 @@ export default function CoursePageTemplate({ location, data, children }) {
 
   const { prevCourse, nextCourse, allCourses } = data
 
-  React.useEffect(() => {
-    if (typeof window === "undefined") return
-
-    async function getViews() {
-      const viewsRef = collection(db, "views")
-      const q = query(viewsRef, where("slug", "==", slug))
-
-      const querySnapshot = await getDocs(q)
-
-      let currentDoc
-      querySnapshot.forEach(item => {
-        currentDoc = {
-          id: item.id,
-          ...item.data(),
-        }
-      })
-
-      if (currentDoc) {
-        setViewsCount(currentDoc.count + 1)
-      } else {
-        const newDoc = await addDoc(collection(db, "views"), {
-          slug,
-          count: 1,
-        })
-        setViewsCount(1)
-        currentDoc = newDoc
-      }
-
-      setCurrentDocId(currentDoc.id)
-    }
-
-    getViews()
-  }, [])
-
-  React.useEffect(() => {
-    let isDev = false
-
-    try {
-      if (process.env.NODE_ENV === "development") isDev = true
-    } catch (err) {}
-
-    if (isDev) return
-
-    if (!viewsCount && !currentDocId) return
-
-    async function updateViews() {
-      await setDoc(doc(db, "views", currentDocId as string), {
-        slug,
-        count: viewsCount,
-      })
-    }
-
-    updateViews()
-  }, [viewsCount, currentDocId])
+  const { count: viewsCount } = usePageViews(slug)
 
   return (
     <Wrapper>
