@@ -14,6 +14,7 @@ import ImportantBlock from "../../components/mdx/ImportantBlock"
 import Share from "../../components/mdx/Share"
 import LandingHeader from "../../components/landing-header"
 import usePageViews from "../../hooks/usePageViews"
+import InfoBlock from "../../components/mdx/InfoBlock"
 
 const Wrapper = styled.div`
   --font-size: 1.3rem;
@@ -191,6 +192,7 @@ const components = {
   CourseLink,
   Regex: RegexBlock,
   Important: ImportantBlock,
+  Info: InfoBlock,
   h2: props => <HeadingLink Tag="h2" {...props} />,
   h3: props => <HeadingLink Tag="h3" {...props} />,
 }

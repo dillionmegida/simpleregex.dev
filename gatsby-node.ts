@@ -16,8 +16,12 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
     const filepathRegex = /^\/([\d\.]+)-([\w-]+)/
 
     const [, courseOrder, coursePath] = value.match(filepathRegex)
+
+
     
     const courseRelativePath = LINKS[coursePath]
+
+    // console.log(courseRelativePath, ',', coursePath)
 
     createNodeField({
       name: `slug`,

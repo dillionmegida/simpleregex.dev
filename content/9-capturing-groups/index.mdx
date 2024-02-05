@@ -1,0 +1,142 @@
+---
+title: "Capturing Groups"
+shortTitle: Capturing Groups
+date: "2023-06-16"
+description: "Group characters in regular expressions with capturing groups"
+cover: capturing-groups-cover.png
+youtubeId: 7yl487x5e3c
+---
+
+Let's look at a very interesting regex concept known as **Capturing Groups**.
+
+## What is a Capturing Group?
+
+A capturing group refers to a pattern enclosed in parentheses `(...)`. This allows you to create a group of characters following a particular order in your regex patterns, as well as capturing the group in your regex results.
+
+Before we see what "capturing" means, let's first understand what a "group" is.
+
+## Group in regex
+
+Let's say we have this string “He typed hahaha and hahahaha”. Here we have "ha" repeated 3 times as "hahaha" and we have "ha" repeated 4 times as "hahahahaha". What if we wanted to match "hahaha" and "hahahaha"? How can you do this with <CourseLink path='quantifiers' course='regex' label='quantifiers' />?
+
+A solution you might think of is:
+
+<Regex pattern="/ha+/g" input="He typed hahaha and hahahahaaa" />
+
+But this will not work the way you expect it to work. That's because the plus quantifier which represents **ONE or MORE** will only be applied to the preceding character “a”, and not “ha” together. As you can see above, the pattern matches all “ha”s, and "haaas" because `/ha+/` means basically “h” followed by ONE or MORE “a”s.
+
+So how do we apply the quantifier on "ha" together? Well, w can use a capturing group to group “h” and “a” together, and apply the quantifier on both of them.
+
+A capturing group begins and ends with an opening and closing parentheses respectively:
+
+<Regex pattern="/(ha)+/g" input="He typed hahaha, hahahaha and hahahahahahahahahahaha" />
+
+With a capturing group, what we have done here is group "ha" together, and then applied a quantifier on that group. Now, the plus quantifier will match **ONE or MORE** of the group, which one or more of "ha". From the abvoe, you can see:
+* "hahaha" as a match - 3 repetitions of "ha" and
+* "hahahaha" as a match - 4 repititions of "ha"
+* "ha....." as a match - many repitions of "ha"
+
+---
+
+Let's look at another example.
+
+Let's say you want to match all domains in a string, for example:
+
+> “I have 4 domains: deee.com, deee.stories.com, me.bio.twitter.com and js5.language.info.com”
+
+How can we match all domains here? That is, including the subdomains?
+
+You could think of a pattern like this:
+
+<Regex pattern="/[\w-]+\.com/g" input="I have 4 domains: deee.com, deee.stories.com, me.bio.twitter.com and js5.language.info.com" />
+
+This pattern means "a character class of word characters or `-` repeated one or more times, followed by a `.com`". From the matches, we have `deee.com`, `stories.com`, `twitter.com` and `info.com`.
+
+These are valid matches but then only the last parts of the domains are matched. What about the subdomains? Now you may think:
+
+<Regex pattern="/[\w-]+\.[\w-]+\.com/g" input="I have 4 domains: deee.com, deee.stories.com, me.bio.twitter.com and js5.language.info.com" />
+
+Our pattern now means "a character class of word characters or `-` repeated one or more times, followed by a `.` followed by a character class of word characters or `-` repeated one or more times, followed by a `.com`". This now captures 3 part subdomains like `y.z.com`, but it no longer captures `z.com` and it also doesn't capture 4 part domains like `x.y.z.com`
+
+Introducing another character class won't also help as that would then capture `x.y.z.com` but not `y.z.com` or `z.com`. A good solution here is a capturing group.
+
+So we can group the character class and add a quantifier on it like this
+
+```txt
+``([\w-]+\.)+``com
+```
+
+Here, we have grouped a character class of word characters or "-" repeated one or more times `[\w-]+` followed by a ".". Then, we applied a **ONE or MORE** quantifier on this group, which now translates to:
+
+* word characters or `-` repeated one or more times, followed by a "." (one time)
+* followed by word characters or `-` repeated one or more times, followed by a "." (two times)
+* ... (three times)
+* ... (more times)
+
+<Regex pattern="/([\w-]+\.)+com/g" input="I have 4 domains: deee.com, deee.stories.com, me.bio.twitter.com and js5.language.info.com" />
+
+<Info>Ignore the orange colors for now</Info>
+
+This way, we can successful match repitions like:
+* `z.com` - one repitition, `z.`
+* `y.z.com` - two repitiions, `y.z.`
+* `x.y.z.com` - three repitiions, `x.y.z.`
+* `u.v.w.x.y.z.com` - six repititions, `u.v.w.x.y.z.`
+
+So if you want to create a pattern and you want to apply a quantifier on multiple characters instead of just one, you can group them using capturing groups.
+
+Now to the second part of the equation...
+
+## Why is it called a "Capturing" Group and not just a Group?
+
+The reason it's called a “Capturing Group”, and not just “Group”, is that it also allows you to capture what the group matches. What do I mean?
+
+Let's see one more example:
+
+> Here are three dates for the events: 23-05-2023, 01-12-2024 and 03-09-2025
+
+To capture the dates, you might think of a pattern like this:
+
+<Regex pattern="/\d{2}-\d{2}-\d{4}/g" input="Here are three dates for the events: 23-05-2023, 01-12-2024 and 03-09-2025" />
+
+This works fine. But what if you wanted to extract the day, month and year? Depending on the programming language you're using, you may have to then loop through each match and extract the first part `AA`, the second part `BB` and the third part `CCCC`. With regular expressions, we can already capture that while the regular expression looks for the matches:
+
+<Regex pattern="/(\d{2})-(\d{2})-(\d{4})/g" input="Here are three dates for the events: 23-05-2023, 01-12-2024 and 03-09-2025" />
+
+<Info>I've added an orange color to the groups so you can distinguish a group from a match</Info>
+
+As you see from the example above, not only does the regex return a match like `23-05-2023`, but we also see the groups in that match: `23`, `05` and `2023`. Depending on the programming language you're using, you can easily extract the groups for each match, and you can assign the first group to `day`, second to `month` and third `year`.
+
+So, a capturing group allows you to group characters which you can apply quantifiers to, but also returns the captured group in your results (along with the full matches).
+
+But you can also turn of a "capturing" feature of a group...
+
+## Non-Capturing Group
+
+Sometimes, you just want to group some characters, but you don't want to capture them. For this, you can create a non-capturing group, by adding a question mark and colon `?:` just after the opening parentheses:
+
+<Regex pattern="/(?:\d{2})-(?:\d{2})-(?:\d{4})/g" input="Here are three dates for the events: 23-05-2023, 01-12-2024 and 03-09-2025" />
+
+Here, I have added `?:` to all the groups. Now, none of the groups are captured; only the matches are returned.
+
+## Capturing can be tricky...sometimes
+
+Sometimes, the groups may not be captured how you would expect. Let's look an example from earlier:
+
+<Regex pattern="/([\w-]+\.)+com/g" input="I have 4 domains: deee.com, deee.stories.com, me.bio.twitter.com and js5.language.info.com" />
+
+You might expect that `deee.`, `deee.stories.`, `me.bio.twitter.` and `js5.language.info.` shoud be the captured groups, but instead what you see that only the last part of the domains are captured. The reason for this is that we captured `([\w-]+\.)` without the quantifier `+`. The captured part justifies the last part of the domains.
+
+So if you want to also capture the full repitions, then you have to group everything with the `+` quantifier.
+
+<Regex pattern="/(([\w-]+\.)+)com/g" input="I have 4 domains: deee.com, deee.stories.com, me.bio.twitter.com and js5.language.info.com" />
+
+What I've done here is add another group which contains the `+`. So first we have this group `([\w-]+\.)...`, then we have a parent group `(([\w-]+\.)+)...` which groups the previous group with `+`. This way, we have captured the repititions.
+
+<Important>The more complicated you make your groups, the more complicated it might be to extract them depending on your programming language. With nested capturing groups like the example above, things can become complicated 😅</Important>
+
+---
+
+Well, that's about it for groups, and I hope this detailed guide has now given you a better understanding of how groups work and examples where they are useful.
+
+Let's move onto other interesting parts of regular expressions.

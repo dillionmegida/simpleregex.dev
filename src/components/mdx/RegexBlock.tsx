@@ -140,6 +140,12 @@ const Container = styled.div`
 
   .match {
     background-color: #2c5c2c;
+    margin: 0 1px;
+    
+    &__group {
+      background-color: #b3670b;
+
+    }
     /* padding: 0px 1px; */
   }
 

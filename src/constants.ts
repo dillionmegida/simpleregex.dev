@@ -10,6 +10,7 @@ export const LINKS = {
   "meta-characters": "/meta-characters",
   "special-characters": "/special-characters",
   "string-validation": "/string-validation",
+  "capturing-groups": "/capturing-groups",
   "negated-character-class-vs-beginning-special-character": "/negated-character-class-vs-beginning-special-character",
 
   youtube: "https://youtube.com/@deeecode",

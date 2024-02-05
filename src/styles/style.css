@@ -60,6 +60,8 @@
   --color-heading-black: black;
   --color-accent: #d1dce5;
 
+  --color-info: rgb(27, 154, 239);
+
   --color-regex: #a7ff72;
   --color-regex-light: #bbfb93;
   --color-regex-dark: #000c0c;
