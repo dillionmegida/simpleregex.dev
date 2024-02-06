@@ -114,14 +114,26 @@ const Container = styled.div`
       border-left: none;
       border-bottom: none;
       padding: 5px;
-      font-size: 12px;
+      font-size: 1rem;
       width: 60px;
       text-align: center;
       color: white;
+      transition: 300ms;
+      font-weight: bold;
+
+      &:hover {
+        background-color: white;
+        color: #131419;
+      }
 
       &.match-btn {
         background-color: var(--color-regex);
         color: #131419;
+
+        &:hover {
+          color: var(--color-regex);
+          background-color: #131419;
+        }
       }
     }
 
@@ -141,10 +153,9 @@ const Container = styled.div`
   .match {
     background-color: #2c5c2c;
     margin: 0 1px;
-    
+
     &__group {
       background-color: #b3670b;
-
     }
     /* padding: 0px 1px; */
   }
@@ -169,10 +180,23 @@ const Container = styled.div`
   }
 `
 
+const CopyURL = styled.button`
+  border: 3px solid var(--color-regex-dar3);
+  background-color: var(--color-regex-dark-2);
+  padding: 15px;
+  display: block;
+  color: white;
+
+  &:hover {
+    border-color: white;
+  }
+`
+
 export default function RegexBlock({
   pattern: _pattern,
   input: _input,
   type = "match",
+  showCopy = false,
 }) {
   const {
     editingMode,
@@ -197,66 +221,83 @@ export default function RegexBlock({
     if (location) setLocationState(location)
   }, [])
 
-  return (
-    <Container>
-      {type === "match" && locationState && (
-        <Link
-          to={getUrlString(location, input, pattern, true)}
-          className="expand-link"
-        >
-          Expand
-        </Link>
-      )}
-      <div className="pattern-block">
-        <span className="pattern-block__label">Regex</span>
-        {!editingMode ? (
-          <span className="pattern-block__string">{pattern}</span>
-        ) : (
-          <input
-            className="pattern-block__input"
-            value={pattern}
-            // onBlur={findMatches}
-            onChange={e => setPatternState(e.target.value)}
-          />
-        )}
-      </div>
-      <div className="input-block">
-        <span className="input-block__label">Input</span>
+  const copyToClipboard = async () => {
+    const urlString = getUrlString(location, input, pattern)
 
-        {!editingMode ? (
-          <span
-            className="input-block__string"
-            dangerouslySetInnerHTML={{ __html: modifiedString }}
-          />
-        ) : (
-          <textarea
-            className="input-block__input"
-            value={input}
-            // onBlur={findMatches}
-            onChange={e => setInputState(e.target.value)}
-          />
-        )}
-      </div>
-      <div className="block-top">
-        <span className="type">{type === "match" ? "Match" : "Validate"}</span>
-        {editingMode ? (
-          <button
-            className="match-btn"
-            onClick={type === "match" ? findMatches : validate}
+    await navigator.clipboard.writeText(urlString)
+    alert("Copied to clipboard")
+  }
+
+  return (
+    <>
+      {" "}
+      <Container>
+        {type === "match" && locationState && (
+          <Link
+            to={getUrlString(location, input, pattern, true)}
+            className="expand-link"
           >
+            Expand
+          </Link>
+        )}
+        <div className="pattern-block">
+          <span className="pattern-block__label">Regex</span>
+          {!editingMode ? (
+            <span className="pattern-block__string">{pattern}</span>
+          ) : (
+            <input
+              className="pattern-block__input"
+              value={pattern}
+              // onBlur={findMatches}
+              onChange={e => setPatternState(e.target.value)}
+            />
+          )}
+        </div>
+        <div className="input-block">
+          <span className="input-block__label">Input</span>
+
+          {!editingMode ? (
+            <span
+              className="input-block__string"
+              dangerouslySetInnerHTML={{ __html: modifiedString }}
+            />
+          ) : (
+            <textarea
+              className="input-block__input"
+              value={input}
+              // onBlur={findMatches}
+              onChange={e => setInputState(e.target.value)}
+            />
+          )}
+        </div>
+        <div className="block-top">
+          <span className="type">
             {type === "match" ? "Match" : "Validate"}
-          </button>
-        ) : (
-          <button className="edit-btn" onClick={() => setEditingMode(true)}>
-            Edit
-          </button>
-        )}
-        {invalidRegex ? (
-          <span className="invalid-text">{invalidRegex}</span>
-        ) : (
-          <></>
-        )}
-      </div>
-    </Container>
+          </span>
+          {editingMode ? (
+            <button
+              className="match-btn"
+              onClick={type === "match" ? findMatches : validate}
+            >
+              {type === "match" ? "✓" : "Validate"}
+            </button>
+          ) : (
+            <button className="edit-btn" onClick={() => setEditingMode(true)}>
+              Edit
+            </button>
+          )}
+          {invalidRegex ? (
+            <span className="invalid-text">{invalidRegex}</span>
+          ) : (
+            <></>
+          )}
+        </div>
+      </Container>
+      {showCopy && (
+        <CopyURL onClick={copyToClipboard} className="copy-url">
+          Copy Regex URL
+        </CopyURL>
+      )}
+    </>
   )
 }

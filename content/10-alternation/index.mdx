@@ -1,0 +1,174 @@
+---
+title: "Alternating Characters"
+shortTitle: Alternating Characters
+date: "2023-06-16"
+description: "Alternate between characters in your patterns"
+cover: alternation-cover.png
+youtubeId: lRvkHRCDNxE
+---
+
+Previously, we looked at <CourseLink path='character-class' label='character classes' /> which allows you to specify a "this or that". Another similar concept in regular expressions is **alternation**, also called **alternating characters**.
+
+## What is Alternation?
+
+Alternation allows you to specify a "this" or "that" character or group of characters. You create them with the pipe `|` symbol. For example:
+
+```txt
+/this``|``that/g
+```
+
+This pattern will match the characters "this" or "that":
+
+<Regex pattern="/this|that/g" input="I love this but I do not love that" />
+
+Because we have the `g` <CourseLink path='flags' label='flag' />, this pattern matches "this" and "that".
+
+How does this differ from character classes?
+
+## Alternation vs Character Classes
+
+The difference is:
+
+<Important>
+  Character classes only allows you to provide characters: `[abc]`. It does not
+  allow you to provide other expressions like groups and quantifiers.
+</Important>
+
+For example, let's say you have a character class of the `\w` meta character, and the `+` plus quantifier which means 1 OR MORE:
+
+```txt
+/``[\w+]``/
+```
+
+Passing plus `+` in a character class will treat it as a “normal character” and not a quantifier. Every special character in a character class is treated as a normal character.
+
+<Regex pattern="/[\w+]/g" input="he likes to ping $&6...what is +ing" />
+
+As you can see above, every character except "$" and "&" are not matched. These are the only characters that are neither `\w` (word characters) nor `+` in the character class.
+
+Also if you attempt to have groups in a character class, like this:
+
+```txt
+/[(ha)]ing/
+```
+
+It also won't work, as the parentheses would be treated as normal bracket characters. So, this character class would mean “open parentheses (” or “h” or “a” or “close parentheses )”.
+
+<Regex pattern="/[(ha)]ing/g" input="random characters: (ing, aing, )ing" />
+
+From the matches, you see "(ing", "aing", and ")ing", because they begin with a character from the character class followed by "ing".
+
+This is how alternation is different.
+
+<Important>
+  Unlike character classes, alternation allows you to combine other special
+  characters in your "this or that" pattern.
+</Important>
+
+With alternation, you can provide expressions like characters, groups, quantifiers or any other valid regular expression. For example:
+
+```txt
+/th``(is|at)``/
+```
+
+Here we have a <CourseLink path='capturing-groups' label='group' /> and in it, we use alternation to indicate "is" or "at". So the pattern here means:
+
+"t" followed by "h" followed by "is" or "at":
+
+<Regex pattern="/th(is|at)/g" input="he said this, he didn't say that" />
+
+<Info>
+  The orange colors signifies the groups that are captured. Remember you can
+  turn off capturing with a question mark followed by a colon in the group:
+  `(?:..)`
+</Info>
+
+Let's see another example. Let's say we had a string like:
+
+> "I grabbed a refreshing can of Coca-Cola, or as some people call it, Coke, while others prefer to refer to it as Coca Cola"
+
+And you want to match "Coca-Cola", "Coke" and "Coca Cola". Here are few ways you can use alternation for this:
+
+<Regex
+  pattern="/Coca-Cola|Coke|Coca Cola/ig"
+  input="I grabbed a refreshing can of Coca-Cola, or as some people call it, Coke, while others prefer to refer to it as Coca Cola"
+/>
+
+<Info>The `i` flag to turn off case restriction.</Info>
+
+Here we basically said "Coca-Cola" or "Coke" or "Coca Cola". Very easy to read, but we can make this shorter.
+
+---
+
+<Regex
+  pattern="/Co(ca-Cola|ke|ca Cola)/ig"
+  input="I grabbed a refreshing can of Coca-Cola, or as some people call it, Coke, while others prefer to refer to it as Coca Cola"
+/>
+
+Very slightly shorter, but what we're doing here is "Co" followed by:
+
+- "co-Cola" or
+- "ke" or
+- "ca Cola"
+
+And of course, the groups are captured.
+
+Now let's make this shorter.
+
+---
+
+<Regex
+  pattern="/Co(ca(-| )Cola|ke)/ig"
+  input="I grabbed a refreshing can of Coca-Cola, or as some people call it, Coke, while others prefer to refer to it as Coca Cola"
+/>
+
+Here we say, "Co" followed by:
+
+- "ca" followed by
+  - "- or |"
+  - followed by "Cola"
+- "ke"
+
+Though shorter, this becomes complex, and readibility becomes difficult. Like I mentioned at the beginning of this course, there are many patterns you can write to achieve the same thing, but always keep reability in mind.
+
+In this pattern, we have a nested group `ca(-| )` which includes an alternation between "ca-" and "ca ". This way, we can match Co`ca-`Cola and Co`ca `Cola. While this does the job, I'd rather use our earlier solution:
+
+```txt
+/Coca-Cola``|``Coke``|``Coca Cola/ig
+```
+
+This is easier to read and pretty clear what we're trying to achieve.
+
+---
+
+## Solve this
+
+Try to solve these exercises on your own, and you can share on Twitter and [tag me @iamdillion](https://twitter.com/iamdillion).
+
+<Info>To share your solution on Twitter, click on `Edit`. After entering your
+  solution, click on the checkmark, then `Copy Regex URL`. Then, share.</Info>
+
+Match all filenames with their extensions here.
+
+<Regex
+  pattern="/your-regex/g"
+  input={`i copied a lot of files: index.js, react-diagram.jpg,
+my-resume.pdf, user111-profile.png, logo.jpeg, contacts.csv and background.png`}
+  showCopy={true}
+/>
+
+<br />
+
+---
+
+Match all domains in this string.
+
+<Regex
+  pattern="/your-regex/g"
+  input={`There are a lot of useful websites like example.com, freecodecamp.org, simple.code, and stackoverflow.net to gather information.`}
+  showCopy={true}
+/>
+
+---
+
+Now let's move onto a more interesting concept known as **Lookaheads**.

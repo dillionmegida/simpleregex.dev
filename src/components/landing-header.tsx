@@ -11,7 +11,8 @@ const Header = styled.header<{ size: "xl" | "l" }>`
 
   background-color: var(--color-regex-dark-2);
   margin: 0;
-  min-height: 600px;
+  height: max-content;
+  padding: 50px 0 150px;
   display: flex;
   justify-content: center;
   align-items: center;

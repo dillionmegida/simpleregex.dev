@@ -177,7 +177,9 @@ const Wrapper = styled.div`
   }
 
   .youtube-iframe {
+    margin-top: 20px;
     margin-bottom: 30px;
+    border: 2px solid var(--color-regex-dark-3);
     width: 100%;
 
     iframe {
@@ -247,7 +249,13 @@ export default function CoursePageTemplate({ location, data, children }) {
 
               {/* <h1> {title}</h1> */}
               {youtubeId && (
-                <YouTube className="youtube-iframe" videoId={youtubeId} />
+                <>
+                  <p>
+                    Here is the video version for this topic. You can read the
+                    written version which comes after the video section.
+                  </p>
+                  <YouTube className="youtube-iframe" videoId={youtubeId} />
+                </>
               )}
               <MDXProvider components={components}>{children}</MDXProvider>
               <br />

@@ -27,15 +27,13 @@ export default function useRegex({ input, pattern, type = "match" }) {
 
       for (const match of matches) {
         const [fullStr, ...group] = match
-        // console.log(match, matches[match]);
         if (group.length) {
-          groups[fullStr]= [...group]
+          groups[fullStr] = [...group]
         }
       }
 
       const newModifiedString = (is_dev ? input : inputState)
         .replace(regexPattern, match => {
-          console.log(match)
           if (input.startsWith("What does that mean?")) {
             console.log(`"${match}"`)
           }
@@ -53,7 +51,6 @@ export default function useRegex({ input, pattern, type = "match" }) {
             }
           }
 
-
           if (match === "\n") {
             return `<span class='newline-end'></span><br/><span class='newline-start'></span>`
           }
@@ -67,13 +64,23 @@ export default function useRegex({ input, pattern, type = "match" }) {
               }`
             })
           } else {
-            return `<span class="match">${match
+            let elem = `<span class="match">${match
               .replace(/\n/g, "<br/>")
 
-              .replace(/\s/g, "&nbsp;")
-              .replace(new RegExp(groupStr, 'g'), groupMatch => {
-                return `<span class='match__group'>${groupMatch}</span>`
-              })}</span>`
+              .replace(/\s/g, "&nbsp;")}`
+
+            if (groupStr !== "") {
+              elem = elem.replace(
+                new RegExp(groupStr.replace(/\s/g, "&nbsp;"), "g"),
+                groupMatch => {
+                  return `<span class='match__group'>${groupMatch}</span>`
+                }
+              )
+            }
+
+            elem += "</span>"
+
+            return elem
           }
         })
         .replace(/\n/g, "<br/>")

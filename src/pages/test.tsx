@@ -22,7 +22,7 @@ const Wrapper = styled.div`
     }
 
     &:hover {
-        color: var(--color-regex);
+      color: var(--color-regex);
     }
   }
 `
@@ -114,14 +114,25 @@ const Container = styled.div`
       border-left: none;
       border-bottom: none;
       padding: 5px;
-      font-size: 12px;
+      font-size: 1rem;
       width: 60px;
       text-align: center;
       color: white;
+      font-weight: bold;
+
+      &:hover {
+        background-color: white;
+        color: #131419;
+      }
 
       &.match-btn {
         background-color: var(--color-regex);
         color: #131419;
+
+        &:hover {
+          color: var(--color-regex);
+          background-color: #131419;
+        }
       }
     }
 
@@ -268,7 +279,7 @@ export default function Regex({ location }) {
                   className="match-btn"
                   onClick={type === "match" ? findMatches : validate}
                 >
-                  {type === "match" ? "Match" : "Validate"}
+                  {type === "match" ? "✓" : "Validate"}
                 </button>
               ) : (
                 <button
