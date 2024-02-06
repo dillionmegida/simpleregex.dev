@@ -6,20 +6,45 @@ const headingSizes = {
   l: 5,
 }
 
+const Wrapper = styled.div`
+  background-color: var(--color-regex-dark-2);
+  color: var(--color-text);
+
+  /* position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-image: radial-gradient(
+      var(--color-regex-dark-3) 1px,
+      transparent 1px
+    );
+    background-size: 10px 10px;
+    width: 40%;
+    height: 200px;
+    z-index: 3;
+  } */
+`
+
 const Header = styled.header<{ size: "xl" | "l" }>`
   --font-size: ${({ size }) => headingSizes[size]}rem;
 
-  background-color: var(--color-regex-dark-2);
+  background-image: radial-gradient(
+    color-mix(in srgb, var(--color-regex-dark-3), transparent 60%) 1px,
+    transparent 1px
+  );
+  background-size: 10px 10px;
   margin: 0;
   height: max-content;
-  padding: 50px 0 150px;
+  padding: 50px 0;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
   isolation: isolate;
   position: relative;
-  clip-path: polygon(0 0, 100% 0%, 100% 89%, 0% 100%);
 
   @media (max-width: 1000px) {
     --font-size: 5rem;
@@ -33,20 +58,6 @@ const Header = styled.header<{ size: "xl" | "l" }>`
     --font-size: 2.5rem;
   }
 
-  /* &::before {
-    content: "";
-    position: absolute;
-    inset: 0 -50px;
-    background: repeating-radial-gradient(#000 0 0.0001%, #fff 0 0.0002%) 60%
-        60%/3000px 3000px,
-      repeating-conic-gradient(#000 0 0.0001%, #fff 0 0.0002%) 40% 40%/4000px
-        3000px;
-    z-index: -1;
-    background-blend-mode: difference;
-    filter: blur(2px) contrast(100) brightness(40);
-    mix-blend-mode: darken;
-  } */
-
   .regex-pro-text {
     text-align: center;
     text-transform: uppercase;
@@ -57,6 +68,8 @@ const Header = styled.header<{ size: "xl" | "l" }>`
   h1 {
     font-size: var(--font-size);
     text-align: center;
+    color: var(--color-text);
+
     &::before {
       content: "/";
       color: var(--color-regex);
@@ -82,8 +95,6 @@ const Header = styled.header<{ size: "xl" | "l" }>`
     width: 180px;
     background-color: var(--color-regex-dark-3);
     padding: 15px;
-    rotate: -2deg;
-    color: white;
     margin-top: 10px;
     font-family: var(--font-heading);
   }
@@ -98,23 +109,29 @@ export default function LandingHeader({
 }) {
   if (children) {
     return (
-      <Header size={size}>
-        <div className="container">{children}</div>
-      </Header>
+      <Wrapper>
+        <Header size={size}>
+          <div className="container">{children}</div>
+        </Header>
+      </Wrapper>
     )
   }
 
   return (
-    <Header size={size}>
-      <div className="container">
-        <span className="regex-pro-text main-font">Become a Regex PRO 💪🏽</span>
-        <h1>
-          Simplified Regular<span className="break"></span>
-          <br />
-          Expressions
-        </h1>
-        <span className="course-box">FREE COURSE ✨</span>
-      </div>
-    </Header>
+    <Wrapper>
+      <Header size={size}>
+        <div className="container">
+          <span className="regex-pro-text main-font">
+            Become a Regex PRO 💪🏽
+          </span>
+          <h1>
+            Simplified Regular<span className="break"></span>
+            <br />
+            Expressions
+          </h1>
+          <span className="course-box">FREE COURSE ✨</span>
+        </div>
+      </Header>
+    </Wrapper>
   )
 }

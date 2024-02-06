@@ -227,7 +227,6 @@ export default function CoursePageTemplate({ location, data, children }) {
             </div>
           </LandingHeader>
         }
-        theme={"regex"}
       >
         {/* <Cover className="page-cover">
           <img src={`/courses/regex/${cover}`} alt={`${title} cover`} />

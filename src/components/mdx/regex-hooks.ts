@@ -21,7 +21,15 @@ export default function useRegex({ input, pattern, type = "match" }) {
       ).match(regexRegex)
 
       const regexPattern = new RegExp(patternAsString, flags)
-      const matches = inputState.matchAll(regexPattern)
+
+      let matches
+
+      try {
+        // if the pattern doesn't contain a global flag, matchAll fails
+        matches = inputState.matchAll(regexPattern)
+      } catch (e) {
+        matches = inputState.match(regexPattern)
+      }
 
       let groups = {} as any
 

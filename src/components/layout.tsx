@@ -3,7 +3,13 @@ import { Link } from "gatsby"
 import styled from "styled-components"
 import LandingHeader from "./landing-header"
 
-const Container = styled.div``
+const Container = styled.div`
+  background-image: radial-gradient(
+    color-mix(in srgb, var(--color-regex-dark-3), transparent 80%) 1px,
+    transparent 1px
+  );
+  background-size: 10px 10px;
+`
 
 const Footer = styled.footer`
   text-align: center;

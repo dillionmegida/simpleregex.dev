@@ -9,19 +9,19 @@ import LandingHeader from "../components/landing-header"
 import { truncateStr } from "../helpers/string"
 
 const Body = styled.div`
-  color: white;
+  color: var(--color-text);
   &.container {
     padding: 50px 30px;
   }
 
   .sec-font {
-    font-size: 1.7rem;
+    font-size: clamp(1rem, 7vw, 1.7rem);
   }
 
   p,
   li {
     font-size: 1.4rem;
-    line-height: 30px;
+    line-height: 1.4;
   }
 
   p {
@@ -40,14 +40,14 @@ const Body = styled.div`
 
   .help {
     position: relative;
-    padding: 40px;
+    padding: 1.5em;
     margin: 50px 0 80px;
-    color: white;
+    color: var(--color-text);
     isolation: isolate;
     text-align: center;
 
     p {
-      font-size: 30px;
+      font-size: clamp(1.1rem, 7vw, 1.7rem);
     }
 
     &::before {
@@ -76,7 +76,6 @@ const Outline = styled.div`
     align-items: center;
     margin-bottom: 25px;
     column-gap: 40px;
-
   }
 
   h2,
@@ -121,7 +120,7 @@ const Outline = styled.div`
 
       &:is(&:hover, &:focus) {
         outline: none;
-        color: white;
+        color: var(--color-text);
         border: 2px solid white;
         background-color: color-mix(in srgb, var(--color-regex), black 90%);
       }
@@ -133,9 +132,11 @@ const Outline = styled.div`
     }
 
     .lesson__desc {
-      font-size: 1.1rem;
-      color: #e6e6e6;
-      line-height: 0.5em;
+      font-size: clamp(1rem, 7vw, 1.1rem);
+      color: var(--color-text);
+      line-height: 1.2em;
+      margin-top: 10px;
+      display: block;
     }
   }
 `

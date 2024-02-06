@@ -69,6 +69,8 @@
   --color-regex-dark-2: #011e1e;
   --color-regex-dark-3: #436131;
 
+  --color-text: #dedbdb;
+
   background-color: var(--color-regex-dark);
   color: white;
 }
