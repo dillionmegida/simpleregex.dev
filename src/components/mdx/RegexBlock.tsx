@@ -10,7 +10,7 @@ const Container = styled.div`
   border-top-left-radius: 0px;
   margin: 40px 0 30px;
   position: relative;
-  color: white;
+  color: var(--color-text);
   width: 100%;
 
   &::after {
@@ -34,7 +34,7 @@ const Container = styled.div`
     font-size: 12px;
     width: 60px;
     text-align: center;
-    color: white;
+    color: var(--color-text);
     top: -25px;
   }
 
@@ -63,7 +63,7 @@ const Container = styled.div`
     &__input {
       background: none;
       border: 1px solid #4a4d61;
-      color: white;
+      color: var(--color-text);
       flex: 1;
       width: 100%;
       max-width: 100%;
@@ -117,7 +117,7 @@ const Container = styled.div`
       font-size: 1rem;
       width: 60px;
       text-align: center;
-      color: white;
+      color: var(--color-text);
       transition: 300ms;
       font-weight: bold;
 
@@ -142,7 +142,7 @@ const Container = styled.div`
       display: block;
       background-color: #f43b3b;
       font-weight: 600;
-      color: white;
+      color: var(--color-text);
       padding: 0 10px;
       display: flex;
       justify-content: center;

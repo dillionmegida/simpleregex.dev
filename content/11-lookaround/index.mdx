@@ -1,0 +1,64 @@
+---
+title: "Lookaround patterns in Regular Expressions"
+shortTitle: Lookaround
+date: "2023-06-16"
+description: "Match substrings that have other substrings around them"
+cover: lookaround-cover.png
+# youtubeId: lRvkHRCDNxE
+---
+
+Moving on to a more advanced concept in regular expressions: **lookarounds** 👀
+
+Let's say we had a string example like this:
+
+> He has 20 dollars and is 10 years old
+
+Say you wanted to write a pattern that would match this person's age, what would it be?
+
+You might think:
+
+```txt
+/``\d+``/g
+```
+
+First we have `\d`, a digit <CourseLink path='meta-characters' label='meta character' /> which matches digits. Then we have the **ONE or MORE** <CourseLink path='special-characters' label='special character' />. This pattern means "one or more digits":
+
+<Regex pattern="/\d+/g" input="He has 20 dollars and is 10 years old" />
+
+From the matches, we see "20" and "10". But our target is only "10" 🤔. You could then expand the regular expression to this:
+
+<Regex
+  pattern="/\d+ years old/g"
+  input="He has 20 dollars and is 10 years old"
+/>
+
+Now we have "10 years old" as a match. But, this includes other characters we're not interested in: " years old". So how can we specifically target the number that "is followed by" the characters " years old" without matching " years old"? Lookaround patterns to the rescue.
+
+In the same vain, say we had a string like:
+
+> He bought 50 items with $500
+
+How do we match the number that is preceded by "$" without matching "$"? Lookaround patterns.
+
+## What are Lookaround Patterns?
+
+In Regex, you can create lookaround patterns. What this means is that you specify a pattern, let's call this `pattern A`, then you have a lookaround pattern, let's call this `pattern B`. The idea is that the regex engine will look for a match for `pattern A`, then it will look around this match to see if it can find a match for `pattern B`. If it finds a match for `pattern B`, then the match for `pattern A` is valid. But if it does not find a match for `pattern B`, then the match for `pattern A` is not a valid match.
+
+<Important>
+
+You can think of lookaround patterns like a checker: "Check around if this match has these characters".
+
+</Important>
+
+Don't worry if this does not make sense. We'll look at examples to simplify this.
+
+## Types of Lookaround Patterns
+
+Lookarounds can be divided into two:
+
+- Lookahead (that is, in front of the match) and
+- Lookbehind (that is, before the match)
+
+---
+
+Let's start with <CourseLink path='lookahead' label='lookahead' /> in the next lesson.

@@ -1,0 +1,143 @@
+---
+title: "Lookahead patterns in Regular Expressions"
+shortTitle: Lookahead
+date: "2023-06-16"
+description: "Match substrings that have other substrings after them"
+cover: lookahead-cover.png
+# youtubeId: lRvkHRCDNxE
+---
+
+A lookahead pattern is a type of a <CourseLink path='lookaround' label='lookaround pattern'/>.
+
+## What is a lookahead pattern?
+
+A lookahead pattern asserts that a match for a pattern, is followed by another pattern. Let's look at an example from the previous lesson. Say we have this string:
+
+> He has 20 dollars and is 10 years old
+
+What if we wanted to know how old the person is in this sentence? We can use a pattern that matches numbers like this:
+
+```txt
+/``\d+``/g
+```
+
+This pattern means "one or more digits":
+
+<Regex pattern="/\d+/g" input="He has 20 dollars and is 10 years old" />
+
+As you can see, we get 20 and 10 as these are the two matches for the pattern.
+
+But, we want just the number that indicates the age. 20 does not indicate the age. It indicates how much he has. To specifically match the number that indicates the age, this is where we can use a lookaround pattern.
+
+Here, we will lookahead of the number in our pattern to see if there's a " years old" string that follows the number. In the case that there's a " years old" string, then we know that the number is the age and it is matched.
+
+## Syntax of a lookahead pattern
+
+```txt
+/Y``(?=Z)``/
+```
+
+You have your pattern, which I call `Y`. Then we have parentheses. In it, we have a question mark and an equal sign `?=`. This represents **lookahead**. After the equal sign, then you have the pattern that you want to lookahead for, which I will call `Z`.
+
+So, this pattern will only match a substring for `Y`, if `Z` comes after Y in the whole string.
+
+Now let's apply this to our example where we want to get the number that indicates the age:
+
+```txt
+/\d+``(?= years old)``/
+```
+
+In this pattern, `Y` will be `\d+` which indicates one or more digits. Then the lookahead, remember it is represented by parentheses, followed by a question mark, followed by an equal sign. Then we would replace `Z` with " years old".
+
+We don't need the global flag, since we only want one number:
+
+<Regex pattern="/\d+(?= years old)/" input="He has 20 dollars and is 10 years old" />
+
+Now when we apply this pattern on our string "He has 20 dollars and is 10 years old", you see that we get a match which is 10. What happens here?
+
+The <CourseLink path='regex-how-regular-expressions-work' label='regex engine' /> first looks for a pattern that matches `\d+` which is one or more digits. By starting from the beginning of the string, it finds **20** which is the first number that matches the pattern. But before the engine considers this a match, it looks ahead of it, to see if the lookahead pattern we have defined comes after the number.
+
+The lookahead we define here is " years old". The pattern that follows 20 is " dollars". This does not match the lookahead pattern. So the regex engine then knows that **20** is not a valid match.
+
+The regex engine continues looking for the next match for one or more digits, and it finds **10**. Again, before the engine considers this a match, it looks ahead of it to see if the " years old" pattern follows it. In the case of 10, it does as you can see in the string. The regex engine confirms that the lookahead pattern comes after 10 which therefore makes 10 a valid match.
+
+<Important>
+One thing to note here is that the match returned is "10", and not "10 years old". Lookahead patterns only verify that a pattern is followed by another pattern. It only does a check-—the lookahead pattern itself is not returned.
+</Important>
+
+---
+
+Let's say we want to match the number that indicates how much he has in the string. How do we use a lookahead in our regular expression?
+
+<Regex pattern="/\d+(?= dollars)/g" input="He has 20 dollars and is 10 years old" />
+
+Here, we have `\d+` with a lookahead of " dollars". So, we have 20 matched. Even though we apply the global flag, you see that only 20 is matched. That's because it's the only one or more digits that is followed by the space dollars pattern.
+
+But if we had another digit, they would also be matched:
+
+<Regex pattern="/\d+(?= dollars)/g" input="He has 20 dollars and is 10 years old. She also has 30 dollars" />
+
+"20" and "30" are the only digits followed by " dollars".
+
+## Negative Lookahead
+
+What we have seen so far is a positive lookahead--"is followed by". We can also match a string if it "is NOT followed by". This is referred to as a **negative lookahead**.
+
+Negative lookaheads match a pattern **THAT IS NOT followed** by another pattern.
+
+In our example above "He has 20 dollars and is 10 years old", we can match the digits that is not followed by " dollars". So this way, we get the age.
+
+The syntax for a negative lookahead is:
+
+```txt
+/Y``(?!Z)``/
+```
+
+Instead of `?=` which we had in a positive lookahead, we now have `?!` used for a negative lookahead.
+
+To match the digits that is not followed by " dollars", we can do:
+
+<Regex pattern="/\d+(?! dollars)/g" input="He has 20 dollars and is 10 years old." />
+
+Our pattern says: one or more digits NOT followed by " dollars"
+
+As you can see here, we have "2" and "10" matched. You're probably surprised that "2" is matched. Well, the reason is that "2" matches `\d+` and it is not followed by " dollars". But if you want to capture more digits, then you can do:
+
+<Regex pattern="/\d+(?!\d| dollars)/g" input="He has 20 dollars and is 10 years old." />
+
+<Info>Remember <CourseLink path='alternation' label='alternation' />? 😉</Info>
+
+What we have done here is used alternation in the negative lookahead pattern. So we're saying:
+
+One or more digits not followed by a digit and not followed by " dollars"
+
+With this, "2" will not be matched because a digit, "0" comes after it.
+
+The regex engine searches until it finds "10". It looks ahead to see if there's a " dollars" pattern. There isn't. Awesome. 10 is a valid match.
+
+---
+
+So remember, `/Y(?=Z)/` is a positive lookahead—the question mark and equal sign, while `/Y(?!=Z)` is a negative lookahead—the question mark and the exclamation mark.
+
+## Which Solution is Better?
+
+If you remember at the beginning of this course, I mentioned that different patterns can achieve the same thing.
+
+In this sentence "He has 20 dollars and is 10 years old", you see that we can get the age using:
+
+- this positive lookahead pattern `/\d+(?= years old)/`
+- and this negative lookahead pattern `/\d+(?!\d| dollars)/g`
+
+Though there are multiple ways to achieve the same thing, when you think about how easy your pattern will be to understand, it can help you choose the right way to use.
+
+In these two solutions, you see that the second one doesn't explicitly signify that we're looking for an age number, but the first one does. So in such case, for what we want to achieve, the first one is a better approach.
+
+<Important>
+When writing regular expressions, always keep **readability** in mind. It will help you in the future as well as others who are collaborating on the same project as you.
+</Important>
+
+---
+
+You can use lookaheads for a lot of interesting things in the patterns you create.
+
+In the next lesson, we'll look at <CourseLink path='lookbehind' label='lookbehind' />.

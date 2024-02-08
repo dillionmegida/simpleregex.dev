@@ -12,6 +12,9 @@ export const LINKS = {
   "string-validation": "/string-validation",
   "capturing-groups": "/capturing-groups",
   "alternation": "/alternation",
+  "lookaround": "/lookaround",
+  "lookahead": "/lookahead",
+  "lookbehind": "/lookbehind",
   "negated-character-class-vs-beginning-special-character": "/negated-character-class-vs-beginning-special-character",
 
   youtube: "https://youtube.com/@deeecode",

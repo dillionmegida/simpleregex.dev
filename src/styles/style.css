@@ -72,7 +72,6 @@
   --color-text: #dedbdb;
 
   background-color: var(--color-regex-dark);
-  color: white;
 }
 
 /* HTML elements */
@@ -172,8 +171,8 @@ p {
 }
 
 hr {
-    border-color: var(--color-regex-dark-3);
-    margin: 40px 0;
+  border-color: var(--color-regex-dark-3);
+  margin: 40px 0;
 }
 
 .container {

@@ -8,7 +8,7 @@ const Container = styled.div`
   border-radius: 10px;
   height: max-content;
   margin-bottom: 20px;
-  background-color: var(--color-regex-dark);
+  background-color: color-mix(in srgb, yellow, var(--color-regex-dark) 95%);
 
   &::after {
     content: "";
@@ -48,6 +48,8 @@ const Container = styled.div`
 
   p {
     margin: 0;
+    color: var(--color-text);
+    font-size: calc(100% - 2px);
   }
 `
 

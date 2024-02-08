@@ -48,14 +48,14 @@ export default function CourseNav({ prevCourse, nextCourse }) {
         <div className="prev">
           <Link to={prevCourse.fields.slug}>
             <span className="icon">&lt;</span>
-            {prevCourse.frontmatter.title}
+            {prevCourse.frontmatter.shortTitle}
           </Link>
         </div>
       )}
       {nextCourse && (
         <div className="next">
           <Link to={nextCourse.fields.slug}>
-            {nextCourse.frontmatter.title} <span className="icon">&gt;</span>
+            {nextCourse.frontmatter.shortTitle} <span className="icon">&gt;</span>
           </Link>
         </div>
       )}

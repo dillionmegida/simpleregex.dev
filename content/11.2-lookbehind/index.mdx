@@ -1,0 +1,42 @@
+---
+title: "Lookbehind patterns in Regular Expressions"
+shortTitle: Lookbehind
+date: "2023-06-16"
+description: "Match substrings that have other substrings before them"
+cover: lookbehind-cover.png
+# youtubeId: lRvkHRCDNxE
+---
+
+From the previous less on <CourseLink path='lookahead' label='lookahead patterns' />, we saw how to match a string when it is "followed by" another string, and also when it is "NOT followed by" another string.
+
+What about the characters behind a string? We can also try a check pattern for that. This is where **lookbehind patterns** come in. 
+
+## What is a Lookbehind pattern?
+
+A lookbehind pattern asserts that a match for a pattern, is preceded by another pattern. Let's see an example where we would use lookbehind patterns.
+
+Say we have this string: “He bought 50 items with $500”. We have two numbers here: 50 and 500. Let's say we want to match the number that represents the price he spent. We can use a lookbehind pattern here.
+
+First let's look at the syntax of a lookbehind pattern.
+
+```txt
+/``(?<=X)``Y/
+```
+
+In the previous lesson, we saw that the syntax of a lookahead pattern is `/Y(?=Z)/`. Take note of the `?=`. For lookbehind, the syntax is then `?<=`.
+
+Coming back to the string: "He bought 50 items with $500". We can match the number that represents the price with this pattern:
+
+```txt
+/``(?<=\$)``\d+/
+```
+
+The pattern starts with a lookbehind for "$". We escaped this character `\$` because `$` is a <CourseLink path='special-characters' label='special character' />. Then we have one or more digits represented with `\d+`. So our pattern says "match one or more digits that is preceded with a dollar sign":
+
+<Regex pattern="/(?<=\$)\d+/g" input="He bought 50 items with $500" />
+
+As you can see here, **50** is not matched because it is preceded by an empty space " ". But **500** is matched because it is preceded by "$".
+
+{/* ## Fixed Lengths
+
+One thing about lookbehinds is that they must be fixed lengths…what do i mean? */}

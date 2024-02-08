@@ -19,7 +19,6 @@ import InfoBlock from "../../components/mdx/InfoBlock"
 const Wrapper = styled.div`
   --font-size: 1.3rem;
   font-size: var(--font-size);
-  color: #dfdbdb;
 
   img {
     width: 100%;
@@ -89,6 +88,7 @@ const Wrapper = styled.div`
       width: 100%;
       margin-top: 43px;
       margin-left: var(--side-bar-width);
+      color: var(--color-text);
     }
   }
 
@@ -296,7 +296,7 @@ export const pageQuery = graphql`
     }
     nextCourse: mdx(id: { eq: $nextCourseId }) {
       frontmatter {
-        title
+        shortTitle
       }
       fields {
         slug
@@ -304,7 +304,7 @@ export const pageQuery = graphql`
     }
     prevCourse: mdx(id: { eq: $previousCourseId }) {
       frontmatter {
-        title
+        shortTitle
       }
       fields {
         slug
