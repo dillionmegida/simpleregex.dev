@@ -154,6 +154,10 @@ const Container = styled.div`
     position: relative;
     background-color: #2c5c2c;
     padding: 1px;
+
+    &__group {
+      background-color: #b3670b;
+    }
   }
 
   .newline-end,

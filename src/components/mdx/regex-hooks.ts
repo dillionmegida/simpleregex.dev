@@ -1,25 +1,31 @@
 import { useEffect, useState } from "react"
 
-export default function useRegex({ input, pattern, type = "match" }) {
+type Args = {
+  input: string
+  pattern: string
+  type?: "match" | "validate"
+}
+
+export default function useRegex({ input, pattern, type = "match" }: Args) {
   const [modifiedString, setModifiedString] = useState("")
   const [patternState, setPatternState] = useState(pattern)
   const [inputState, setInputState] = useState(input)
   const [invalidRegex, setInvalidRegex] = useState("")
   const [editingMode, setEditingMode] = useState(input === "" || pattern === "")
 
-  //   const is_dev = process.env.NODE_ENV === "development"
-  const is_dev = false
-
   const findMatches = () => {
     if (inputState === "" && patternState === "") return
 
     try {
+      // regex to match "xyz" (group) and "flags" (group) in /xyz/flags
       const regexRegex = /\/(.*)\/(\w+)?/
 
-      const [, patternAsString, flags] = (
-        is_dev ? pattern : patternState
-      ).match(regexRegex)
+      // first match is full string, second match is pattern, third match is flags
+      const [, patternAsString, flags] = patternState.match(
+        regexRegex
+      ) as RegExpMatchArray
 
+      // construct regex pattern from extracted parameters
       const regexPattern = new RegExp(patternAsString, flags)
 
       let matches
@@ -31,7 +37,9 @@ export default function useRegex({ input, pattern, type = "match" }) {
         matches = inputState.match(regexPattern)
       }
 
-      let groups = {} as any
+      // store the groups in a string in a dictionary
+      // for example, { "hello": ["he", "lo"]}
+      let groups: {[fullstr in string]: string[]} = {}
 
       for (const match of matches) {
         const [fullStr, ...group] = match
@@ -40,16 +48,14 @@ export default function useRegex({ input, pattern, type = "match" }) {
         }
       }
 
-      const newModifiedString = (is_dev ? input : inputState)
+      const newModifiedString = inputState
         .replace(regexPattern, match => {
-          if (input.startsWith("What does that mean?")) {
-            console.log(`"${match}"`)
-          }
-
+          // if a string like "hello" has two groups: "he" and "lo"
+          // combine both groups to a string with alternation: he|lo
           let groupStr = ""
 
-          if (groups[match]) {
-            const targetGroup = groups[match]
+          const targetGroup = groups[match]
+          if (targetGroup) {
             for (let i = 0; i < targetGroup.length; i++) {
               const group = targetGroup[i]
               if (match.includes(group)) {
@@ -72,19 +78,26 @@ export default function useRegex({ input, pattern, type = "match" }) {
               }`
             })
           } else {
-            let elem = `<span class="match">${match
-              .replace(/\n/g, "<br/>")
-
-              .replace(/\s/g, "&nbsp;")}`
+            let groupMatchStr
 
             if (groupStr !== "") {
-              elem = elem.replace(
-                new RegExp(groupStr.replace(/\s/g, "&nbsp;"), "g"),
+              groupMatchStr = match.replace(
+                new RegExp(groupStr, "g"),
                 groupMatch => {
-                  return `<span class='match__group'>${groupMatch}</span>`
+                  return `<span[]class='match__group'>${groupMatch}</span>`
+                  // use [] to temporarily represent space so that the space will
+                  // not be replaced by something else during processing of spaces
                 }
               )
             }
+
+            let elem = `<span class="match">${(groupMatchStr ?? match)
+              .replace(/\n/g, "<br/>")
+              .replace(/\s/g, "&nbsp;")}`
+              //
+              .replace(/\[\]/g, " ")
+              // replace the [] from earlier with a normal space as
+              // processing of spaces is done
 
             elem += "</span>"
 
@@ -109,21 +122,21 @@ export default function useRegex({ input, pattern, type = "match" }) {
     try {
       const regexRegex = /\/(.*)\/(\w+)?/
 
-      const [, patternAsString, flags] = (
-        is_dev ? pattern : patternState
-      ).match(regexRegex)
+      const [, patternAsString, flags] = patternState.match(regexRegex) as RegExpMatchArray
 
+      // if pattern already begins with "^", use pattern as is
+      // else, add the special characters to the pattern
       const patternWithSpecialChars = patternAsString.startsWith("^")
         ? patternAsString
         : `^${patternAsString}$`
 
       const regexPattern = new RegExp(patternWithSpecialChars, flags)
 
-      const isValid = regexPattern.test(is_dev ? input : inputState)
+      const isValid = regexPattern.test(inputState)
 
       const newModifiedString = isValid
-        ? `<span class="match">${is_dev ? input : inputState}</span>`
-        : `<span>${is_dev ? input : inputState}</span>`
+        ? `<span class="match">${inputState}</span>`
+        : `<span>${inputState}</span>`
 
       setModifiedString(newModifiedString)
 
@@ -145,23 +158,6 @@ export default function useRegex({ input, pattern, type = "match" }) {
     }
   }, [])
 
-  //   useEffect(() => {
-  //     if (input !== "" && pattern !== "") {
-  //       setInputState(input)
-  //       setPatternState(pattern)
-
-  //       setEditingMode(false)
-  //       setInvalidRegex("")
-  //     }
-  //   }, [input, pattern])
-
-  //   useEffect(() => {
-  //     if (inputState !== "" && patternState !== "") {
-  //       if (type === "match") findMatches()
-  //       else validate()
-  //     }
-  //   }, [input, pattern])
-
   return {
     modifiedString,
     invalidRegex,
@@ -169,19 +165,9 @@ export default function useRegex({ input, pattern, type = "match" }) {
     setEditingMode,
     setPatternState,
     setInputState,
-    pattern: is_dev ? pattern : patternState,
-    input: is_dev ? input : inputState,
+    pattern: patternState,
+    input: inputState,
     findMatches,
     validate,
   }
 }
-
-// /[A-Z]+\$/gi
-
-// Also @⁨💜⁩ I need your help here as I never too strong with regex
-// “type: textContent|5654$5812$7$ABCDEFGHIJK$"
-
-// So here what i need i want to get the ABCDEFGHIJK from this string
-// 😢
-
-// @⁨Isreal Odogwu⁩
