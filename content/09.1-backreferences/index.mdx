@@ -1,0 +1,146 @@
+---
+title: "Backreferences"
+shortTitle: Backreferences
+date: "2024-04-24"
+description: "Refer to captured groups using backreferences in your patterns"
+cover: backreferences-cover.png
+youtubeId: mTGgiksFEeg
+---
+
+In the previous lesson, we learnt about <CourseLink path='capturing-groups' label='capturing groups' /> which allows us to--as the name says--capture groups:
+
+<Regex pattern="/\$(\d+)/g" input="He owes me $500" />
+
+While "$500" returns as a match in this pattern, "500" is also returned as the first group which can you specifically extract depending on the programming language you're using.
+
+But, what if you wanted to reference that group in your pattern? Let's say you wanted to match "500" somewhere else like in this case:
+
+```txt
+He owes me $500 - $ and 500
+```
+
+We can use a **backreference** for this.
+
+---
+
+Think of a backreference as a variable. It's a technique the regex engine uses for "memorizing" a group that it captures. Such variables exist as `\1` (for first group), `\2` (for second group) and so on.
+
+Now let's apply a backreference to our example above:
+
+<Regex pattern="/\$(\d+).*\1/g" input="He owes me $500 - $ and 500" />
+
+Here, our regex says "$ followed by some numbers (which are captured) followed by any other character repeated one or more times followed by the first group which was captured (in our case 500)". If I change the last 500 to 600, what you see is that it no longer matches:
+
+<Regex pattern="/\$(\d+).*\1/g" input="He owes me $500 - $ and 600" />
+
+That's because the regex engine captures "500" but it doesn't see any other 500 as we defined in our pattern. But if we change "$500" to "$600", now we have a match:
+
+<Regex pattern="/\$(\d+).*\1/g" input="He owes me $600 - $ and 600" />
+
+---
+
+This is not the best example to see where backreferences shine, so let's look at another one:
+
+```txt
+Do not tell me 'that is wrong'
+The driver said that "I would like to go to John's house"
+'The lady answered him saying "what would you like to order" but he did not respond'
+`It's not my name. Why does everyone call me "James"?`
+```
+
+Let's say we want to match all the quotes here:
+* 'that is wrong'
+* "I would like to go to John's house"
+* 'The lady answered him saying "what would you like to order" but he did not respond'
+* \`It's not my name. Why does everyone call me "James"?\`
+
+Now, you might think:
+
+<Regex pattern="/'[^']*'/g" input={`Do not tell me 'that is wrong'
+The driver said that "I would like to go to John's house"
+'The lady answered him saying "what would you like to order" but he did not respond'
+\`It's not my name. Why does everyone call me "James"?\``} />
+
+Our pattern here says "single quote followed by <CourseLink path='negated-character-class' label='anything except' /> a single quote repeated one or more times followed by a single quote".
+
+In this case, it matches the first quote 'that is wrong' good and fine, but it doesn't match the others correctly.
+
+We can improve the pattern to this:
+
+<Regex pattern={`/['"][^'"]*['"]/g`} input={`Do not tell me 'that is wrong'
+The driver said that "I would like to go to John's house"
+'The lady answered him saying "what would you like to order" but he did not respond'
+\`It's not my name. Why does everyone call me "James"?\``} />
+
+Our pattern now says "a single <CourseLink path='character-class' label='or' /> double quote followed by anything except a single or double quote, followed by a single or double quote". This still doesn't match the other quotes correctly.
+
+What's happening here is that the <CourseLink path='regex-engine' label='regex engine' /> looks for a single or double quote. It finds a single quote, then it matches every other thing except a single or double quote. For the first quote, this means it matches `that is wrong`, then it comes across a single quote. Now we have `'that is wrong'` matched.
+
+Then, it looks for a single or double quote again. It finds a double quote. Then it matches every other thing except a single or double quote. For the second match we expect, the regex engine matches `I would like to go to John`. Now it comes across a single qoute from our <CourseLink path='character-class' label='character class' /> and returns that match as `"I would like to go to John'`.
+
+The problem here is that it matched a double quote at the beginning of our pattern but stopped at a single quote at the end of our pattern. How can we tell the regex engine to "remember" that it matched a double quote at the beginning of our pattern, and so it should only look for another double quote at the end of our pattern? This is where we can use backreferences again.
+
+What we're going to say is: look for a single or double quote, remember which of them you found. Let's say it found a double quote. Then we tell the regex engine to match other characters and only stop when you find what you found at the beginning, which is a double quote. The pattern looks like this:
+
+<Regex pattern={`/(['"]).*\\1/g`} input={`Do not tell me 'that is wrong'
+The driver said that "I would like to go to John's house"
+'The lady answered him saying "what would you like to order" but he did not respond'
+\`It's not my name. Why does everyone call me "James"?\``} />
+
+Now we have put `['"]` in a group: `(['"])`.
+
+<Important>
+Backreferences **can only be used** for capturing groups. They cannot be used for normal patterns or non-capturing groups.
+</Important>
+
+So our pattern starts with a capturing group which contains a character class that will match a single or double qoute. When any of these characters are matched, the regex engine "memorizes" that character. Then it matches any character `.` one or more times and ends with the captured group `\`.
+
+Now, things seem to be looking good. The regex engine captures a single quote, matches many characters then ends with another single quote so we have `'that is wrong'` as a match.
+
+It captures a double quote, matches many characters then ends with another double quote so we have `"I would like to go John's house"`. Notice that the regex engine did not stop at `'` in `John's`? That's because we used a backreference, the regex engine looks for what it captured at the beginning, which is the double quote.
+
+But then, there's a problem here. The problem is that we have a **greedy quantifier**. The zero or more quantifier `*` by default, is a greedy quantifier, which means it matches "as much as we can". You do not see the problem in our string because by default, `.` does not match newlines. Let's introduce the <CourseLink path='flags' label="newline flag, s" /> and you would see the difference:
+
+<Regex pattern={`/(['"]).*\\1/gs`} input={`Do not tell me 'that is wrong'
+The driver said that "I would like to go to John's house"
+'The lady answered him saying "what would you like to order" but he did not respond'
+\`It's not my name. Why does everyone call me "James"?\``} />
+
+What you notice here now is that we have a whole match from:
+
+```txt
+'that is wrong...The driver said...`It'
+```
+
+The greedy quantifier used on `.*`, means match as much as you can. And the `s` flag means `.` can also match newlines. So our pattern matches until it cannot match anymore. Which means until it encounters the last `'` which was captured in the first group.
+
+If I should add another `'` after "Why does" on the last line, you'd see that the match becomes even longer:
+
+<Regex pattern={`/(['"]).*\\1/gs`} input={`Do not tell me 'that is wrong'
+The driver said that "I would like to go to John's house"
+'The lady answered him saying "what would you like to order" but he did not respond'
+\`It's not my name. Why does' everyone call me "James"?\``} />
+
+To turn off this greedy behaviour, we can do this: `.*?`. This means, match the "least" that you can:
+
+<Regex pattern={`/(['"]).*?\\1/gs`} input={`Do not tell me 'that is wrong'
+The driver said that "I would like to go to John's house"
+'The lady answered him saying "what would you like to order" but he did not respond'
+\`It's not my name. Why does everyone call me "James"?\``} />
+
+Nice! Now, `.*?` matches the least, which means until it encounters the first "valid stop". Our pattern now finds a single quote, captures it, matches the least possible substring until it finds another single quote (using our backreference).
+
+Same thing for the double quote: finds one, captures it, matches the least possible substring until it finds another double quote.
+
+Now, we can introduce a backtick in our character class, so that we can match quotes like \`...\`:
+
+<Regex pattern={`/(['"\`]).*?\\1/gs`} input={`Do not tell me 'that is wrong'
+The driver said that "I would like to go to John's house"
+'The lady answered him saying "what would you like to order" but he did not respond'
+\`It's not my name. Why does everyone call me "James"?\``} />
+
+Our capturing group now contains a character class with ', " and `. And we are now able to capture every quotes.
+
+---
+
+I hope these examples show you how useful backreferences can be. Let's look at one more example: <CourseLink path='backreferences-repeated-words-example' label="Matching repeated words with backreferences" />

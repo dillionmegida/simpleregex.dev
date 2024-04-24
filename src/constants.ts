@@ -3,7 +3,11 @@ export const LINKS = {
   terms: "/terms",
   "first-regular-expression": "/first-regular-expression",
   flags: "/flags",
+
+  // repeated
   "how-regular-expressions-work": "/how-regular-expressions-work",
+  "regex-engine": "/how-regular-expressions-work",
+
   "character-class": "/character-class",
   "negated-character-class": "/negated-character-class",
   quantifiers: "/quantifiers",
@@ -11,6 +15,8 @@ export const LINKS = {
   "special-characters": "/special-characters",
   "string-validation": "/string-validation",
   "capturing-groups": "/capturing-groups",
+  "backreferences": "/backreferences",
+  "backreferences-repeated-words-example": "/backreferences-repeated-words-example",
   "alternation": "/alternation",
   "lookaround": "/lookaround",
   "lookahead": "/lookahead",

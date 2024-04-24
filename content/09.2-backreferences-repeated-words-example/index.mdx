@@ -1,0 +1,66 @@
+---
+title: "Using backreferences to find repeated words"
+shortTitle: Repeated Words Example 
+date: "2024-04-24"
+description: "Here we learn how to use backreferences in apturing groups to find repeated words in a string"
+cover: repeated-words-backreferences-example.png
+---
+
+We've looked at <CourseLink path='backreferences' label="backreferences" /> in the previous lesson. And we saw how they can be useful when matching different quotes in a string:
+
+<Regex pattern={`/(['"\`]).*?\\1/gs`} input={`Do not tell me 'that is wrong'
+The driver said that "I would like to go to John's house"
+'The lady answered him saying "what would you like to order" but he did not respond'
+\`It's not my name. Why does everyone call me "James"?\``} />
+
+Let's look at another example where backreferences can be very helpful.
+
+---
+
+Let's say you had this string:
+
+```txt
+my name is john john and i would like some tea tea please
+```
+
+Here, we have two repeated words: "john" and "tea". If you were to use a programming language to find these repeated words, you would probably have to loop through every word to check.
+
+"Check 'my'. Is it followed by 'my'? No. Check 'name'...and so on"
+
+We can easily do this with backreferences in regular expressions.
+
+First, we have a pattern to match a word:
+
+<Regex pattern={`/\\b\\w+\\s/g`} input={`my name is john john and i would like some tea tea please`} />
+
+Our pattern here is "a word boundary followed by word characters repeated one or more times followed by a space".
+
+From the matches, you see all words matched, except "please" as it does not have a space in front of it.
+
+Now, let's look for the repetitions. We have to capture the word as a group as that's the only way we can use backreferences:
+
+<Regex pattern={`/\\b(\\w+)\\s/g`} input={`my name is john john and i would like some tea tea please`} />
+
+Time to use a backreference:
+
+<Regex pattern={`/\\b(\\w+)\\s\\1/g`} input={`my name is john john and i would like some tea tea please`} />
+
+In our pattern, we added `\1` after the space.
+
+Now the regex engine captures a word like "my", then it checks if it is followed by a space and followed by "my". For "my", that is not the case.
+
+In the case of "john", the regex engine captures the word, then it checks if it is followed by a space, and followed by "john". That's the case here, and also for "tea".
+
+Instead of matching "john john", we can match only "john " by using a <CourseLink path='lookahead' label='lookahead pattern' />:
+
+<Regex pattern={`/\\b(\\w+)\\s(?=\\1)/g`} input={`my name is john john and i would like some tea tea please`} />
+
+By using the backreference in the lookahead pattern, `(?=\1)`, we now match the word and the space only if the word is repeated coming after it. If I remove the repetition for "john", you see it no longer becomes a match:
+
+<Regex pattern={`/\\b(\\w+)\\s(?=\\1)/g`} input={`my name is john and i would like some tea tea please`} />
+
+Now, using any programming language, you can simply replace the repeated words or do anything you want them 😅
+
+---
+
+I hope this example was helpful and shows you how useful backreferences can be.

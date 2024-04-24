@@ -153,6 +153,7 @@ const Container = styled.div`
   .match {
     background-color: #2c5c2c;
     margin: 0 1px;
+    word-break: break-all;
 
     &__group {
       background-color: #b3670b;
@@ -169,7 +170,7 @@ const Container = styled.div`
   .newline-end,
   .newline-start {
     padding: 0 1px;
-    background-color: color-mix(in srgb, #ee7539 70%, white);
+    background-color: color-mix(in srgb, #2c5c2c 80%, white);
   }
 
   .newline-end {
@@ -197,6 +198,7 @@ export default function RegexBlock({
   input: _input,
   type = "match",
   showCopy = false,
+  debug = false,
 }) {
   const {
     editingMode,
@@ -213,6 +215,7 @@ export default function RegexBlock({
     input: _input,
     pattern: _pattern,
     type,
+    debug,
   })
 
   const [locationState, setLocationState] = useState<null | Location>(null)

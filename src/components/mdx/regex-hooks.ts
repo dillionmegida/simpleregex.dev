@@ -4,9 +4,15 @@ type Args = {
   input: string
   pattern: string
   type?: "match" | "validate"
+  debug?: boolean
 }
 
-export default function useRegex({ input, pattern, type = "match" }: Args) {
+export default function useRegex({
+  input,
+  pattern,
+  type = "match",
+  debug = false,
+}: Args) {
   const [modifiedString, setModifiedString] = useState("")
   const [patternState, setPatternState] = useState(pattern)
   const [inputState, setInputState] = useState(input)
@@ -39,7 +45,7 @@ export default function useRegex({ input, pattern, type = "match" }: Args) {
 
       // store the groups in a string in a dictionary
       // for example, { "hello": ["he", "lo"]}
-      let groups: {[fullstr in string]: string[]} = {}
+      let groups: { [fullstr in string]: string[] } = {}
 
       for (const match of matches) {
         const [fullStr, ...group] = match
@@ -70,6 +76,9 @@ export default function useRegex({ input, pattern, type = "match" }: Args) {
           }
 
           if (match.includes("\n")) {
+            // TODO: if a match that contains a new line has a group
+            // the next block that is supposed to handle the group
+            // is never reached
             return match.split(/\n/).reduce((a, b) => {
               return `${
                 `<span class='match'>${a}</span>` +
@@ -77,32 +86,29 @@ export default function useRegex({ input, pattern, type = "match" }: Args) {
                 `<span class='match'>${b}</span>`
               }`
             })
-          } else {
-            let groupMatchStr
-
-            if (groupStr !== "") {
-              groupMatchStr = match.replace(
-                new RegExp(groupStr, "g"),
-                groupMatch => {
-                  return `<span[]class='match__group'>${groupMatch}</span>`
-                  // use [] to temporarily represent space so that the space will
-                  // not be replaced by something else during processing of spaces
-                }
-              )
-            }
-
-            let elem = `<span class="match">${(groupMatchStr ?? match)
-              .replace(/\n/g, "<br/>")
-              .replace(/\s/g, "&nbsp;")}`
-              //
-              .replace(/\[\]/g, " ")
-              // replace the [] from earlier with a normal space as
-              // processing of spaces is done
-
-            elem += "</span>"
-
-            return elem
           }
+
+          let groupMatchStr
+
+          if (groupStr !== "") {
+            groupMatchStr = match.replace(new RegExp(groupStr), groupMatch => {
+              return `<span[]class='match__group'>${groupMatch}</span>`
+              // use [] to temporarily represent space so that the space will
+              // not be replaced by something else during processing of spaces
+            })
+          }
+
+          let elem = `<span class="match">${(groupMatchStr ?? match)
+            .replace(/\n/g, "<br/>")
+            .replace(/\s/g, "&nbsp;")}`
+            //
+            .replace(/\[\]/g, " ")
+          // replace the [] from earlier with a normal space as
+          // processing of spaces is done
+
+          elem += "</span>"
+
+          return elem
         })
         .replace(/\n/g, "<br/>")
 
@@ -122,7 +128,9 @@ export default function useRegex({ input, pattern, type = "match" }: Args) {
     try {
       const regexRegex = /\/(.*)\/(\w+)?/
 
-      const [, patternAsString, flags] = patternState.match(regexRegex) as RegExpMatchArray
+      const [, patternAsString, flags] = patternState.match(
+        regexRegex
+      ) as RegExpMatchArray
 
       // if pattern already begins with "^", use pattern as is
       // else, add the special characters to the pattern
