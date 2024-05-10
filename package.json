@@ -24,6 +24,7 @@
     "gatsby-source-filesystem": "^5.10.0",
     "gatsby-transformer-remark": "^6.10.0",
     "gatsby-transformer-sharp": "^5.10.0",
+    "husky": "^9.0.11",
     "prism-react-renderer": "^2.0.5",
     "react": "^18.2.0",
     "react-children-utilities": "^2.9.0",
@@ -32,9 +33,19 @@
     "sharp": "^0.32.1",
     "styled-components": "^5.3.11"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "jest"
+    }
+  },
   "devDependencies": {
+    "@testing-library/react": "^15.0.7",
+    "@types/jest": "^29.5.12",
     "@types/styled-components": "^5.1.26",
-    "prettier": "^2.8.8"
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "prettier": "^2.8.8",
+    "ts-jest": "^29.1.2"
   },
   "keywords": [
     "regex",
@@ -48,7 +59,8 @@
     "start": "gatsby develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
+    "test": "jest",
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",

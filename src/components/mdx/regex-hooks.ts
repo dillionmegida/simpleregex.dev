@@ -17,7 +17,9 @@ export default function useRegex({
   const [patternState, setPatternState] = useState(pattern)
   const [inputState, setInputState] = useState(input)
   const [invalidRegex, setInvalidRegex] = useState("")
-  const [editingMode, setEditingMode] = useState(input === "" || pattern === "")
+  const [editingMode, setEditingMode] = useState(
+    input === "" || pattern === ""
+  )
 
   const findMatches = () => {
     if (inputState === "" && patternState === "") return
@@ -34,23 +36,43 @@ export default function useRegex({
       // construct regex pattern from extracted parameters
       const regexPattern = new RegExp(patternAsString, flags)
 
-      let matches
+      let matchResult
 
       try {
         // if the pattern doesn't contain a global flag, matchAll fails
-        matches = inputState.matchAll(regexPattern)
+        matchResult = {
+          matches: inputState.matchAll(regexPattern),
+          multiple: true,
+        }
       } catch (e) {
-        matches = inputState.match(regexPattern)
+        matchResult = {
+          matches: inputState.match(regexPattern),
+          multiple: false,
+        }
       }
 
       // store the groups in a string in a dictionary
       // for example, { "hello": ["he", "lo"]}
       let groups: { [fullstr in string]: string[] } = {}
 
-      for (const match of matches) {
-        const [fullStr, ...group] = match
-        if (group.length) {
-          groups[fullStr] = [...group]
+      if (matchResult.multiple) {
+        // in the case of matchAll, it returns an array
+        // of arrays where each array is for each match
+        // along with the captured groups
+        for (const match of matchResult.matches) {
+          const [fullStr, ...group] = match
+          if (group.length) {
+            groups[fullStr] = [...group]
+          }
+        }
+      } else {
+        // in the case of match, it returns an array
+        // for the match, along with the captured groups
+        if (matchResult.matches) {
+          const [fullStr, ...group] = matchResult.matches
+          if (group.length) {
+            groups[fullStr] = [...group]
+          }
         }
       }
 
@@ -134,11 +156,16 @@ export default function useRegex({
 
       // if pattern already begins with "^", use pattern as is
       // else, add the special characters to the pattern
-      const patternWithSpecialChars = patternAsString.startsWith("^")
+      const patternWithSpecialChars = patternAsString.startsWith(
+        "^"
+      )
         ? patternAsString
         : `^${patternAsString}$`
 
-      const regexPattern = new RegExp(patternWithSpecialChars, flags)
+      const regexPattern = new RegExp(
+        patternWithSpecialChars,
+        flags
+      )
 
       const isValid = regexPattern.test(inputState)
 
@@ -151,7 +178,9 @@ export default function useRegex({
       setEditingMode(false)
 
       if (!isValid)
-        return setInvalidRegex("The pattern does not match this string")
+        return setInvalidRegex(
+          "The pattern does not match this string"
+        )
 
       if (invalidRegex) setInvalidRegex("")
     } catch (err) {
