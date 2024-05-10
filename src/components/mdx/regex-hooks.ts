@@ -113,7 +113,7 @@ export default function useRegex({
           let groupMatchStr
 
           if (groupStr !== "") {
-            groupMatchStr = match.replace(new RegExp(groupStr), groupMatch => {
+            groupMatchStr = match.replace(new RegExp(groupStr, 'g'), groupMatch => {
               return `<span[]class='match__group'>${groupMatch}</span>`
               // use [] to temporarily represent space so that the space will
               // not be replaced by something else during processing of spaces
